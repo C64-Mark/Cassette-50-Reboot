@@ -131,6 +131,14 @@ defm    LIBSPRITE_DATACOLLIDE_A ;spritenumber
         
         endm
 
+defm    LIBSPRITE_SPRITECOLLIDE_A ;spritenumber
+
+        ldy /1
+        lda SpriteNumberMask,y
+        and SPRCSP
+        
+        endm
+        
 defm    LIBSPRITE_MULTICOLORENABLE_AV ;spritenumber, enable/disable
 
         ldy /1

@@ -18,11 +18,23 @@ GameLoop
         jsr MoveTank
         jsr FireMissile
         jsr MoveMissile
+        jsr FireBullet
+        jsr MoveBullet
+        jsr CheckSpriteCollision
+
+        jsr GameFlowUpdate
+
+        lda gameStatus
+        bne GameLoop
+        jmp Initialise
 
         ; update bomb
         ; turret fire / update bullet
         ; move tank
         ; missile fire / update missile
         ; bomb collision
-
-        jmp GameLoop
+        ;lda #19
+        ;jsr krnCHROUT
+        ;ldx planeDestroyed
+        ;lda #0
+        ;jsr $BDCD

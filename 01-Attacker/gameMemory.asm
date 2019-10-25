@@ -34,7 +34,7 @@ SPRPTR0         = $07F8 ;Sprite pointers
 ;sprite data
 SPRITERAM       = 170
 *=$2A80
-                incbin "spritesAttacker.spt", 1, 6, true
+                incbin "spritesAttacker.spt", 1, 18, true
 
 ;character set
 *=$3000

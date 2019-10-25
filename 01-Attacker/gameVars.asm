@@ -55,11 +55,17 @@ scnLevelOneb            text "{home}{down*17}{right*28}MGGGGGGGH{return}"
                         text "{green}PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
                         byte 00
 
+gameStatus              byte 00
+
 planeXHi                byte 00
 planeXLo                byte 00, 00 ; fraction, integer
 planeY                  byte 00
 planeSprite             byte 00
 planeVelocity           byte 00, 00 ; fraction, integer
+planeDestroyed          byte 00
+planeExplosionFrame     byte 00
+planeExplosionLoop      byte 00, 00
+planeExplosionActive    byte 00
 
 tankXHi                 byte 00
 tankXLo                 byte 00, 00 ; fraction, integer
@@ -79,7 +85,17 @@ turretXLo               byte 00
 turretY                 byte 00
 turretSprite            byte 00
 
+bulletXHi               byte 00
+bulletXLo               byte 00
+bulletY                 byte 00
+bulletSprite            byte 00
+bulletFired             byte 00
+
 spriteNumberMask        byte %00000001, %00000010, %00000100, %00001000
                         byte %00010000, %00100000, %01000000, %10000000
 
-
+gfMenu                  = 0
+gfAlive                 = 1
+gfFlood                 = 2
+gfDying                 = 3
+gfDead                  = 4

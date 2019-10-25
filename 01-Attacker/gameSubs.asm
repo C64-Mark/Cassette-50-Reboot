@@ -9,14 +9,20 @@ InitVariables
         sta tankXHi
         sta turretXHi
         sta missileXHi
+        sta bulletXHi
         sta planeSprite
         sta planeVelocity + 1
         sta missileFired
+        sta bulletFired
+        sta planeDestroyed
+        sta planeExplosionLoop
+        sta planeExplosionLoop + 1
         lda #128
         sta planeVelocity
         lda #1
         sta tankSprite
         sta tankDx
+        sta gameStatus
         lda #2
         sta turretSprite
         lda #205
@@ -29,12 +35,20 @@ InitVariables
         sta missileXLo + 1
         lda #101
         sta turretY
+        lda #90
+        sta bulletY
         lda #47
         sta turretXLo
+        lda #60
+        sta bulletXLo
         lda #128
         sta tankSpeed
+        lda #3
+        sta bulletSprite
         lda #5
         sta missileSprite
+        lda #7
+        sta planeExplosionFrame
         rts
 
 InitGame
@@ -74,6 +88,8 @@ InitSprites
         LIBSPRITE_SETFRAME_AV tankSprite, 1
         LIBSPRITE_MULTICOLORENABLE_AV turretSprite, false
         LIBSPRITE_SETFRAME_AV turretSprite, 2
+        LIBSPRITE_MULTICOLORENABLE_AV bulletSprite, false
+        LIBSPRITE_SETFRAME_AV bulletSprite, 3
         LIBSPRITE_MULTICOLORENABLE_AV missileSprite, false
         LIBSPRITE_SETFRAME_AV missileSprite, 5
         LIBSPRITE_ENABLE_VV %00000111, true
@@ -81,11 +97,13 @@ InitSprites
         LIBSPRITE_SETPOSITION_AAAA tankSprite, tankXHi, tankXLo + 1, tankY
         LIBSPRITE_SETPOSITION_AAAA missileSprite, missileXHi, missileXLo + 1, missileY
         LIBSPRITE_SETPOSITION_AAAA turretSprite, turretXHi, turretXLo, turretY
+        LIBSPRITE_SETPOSITION_AAAA bulletSprite, bulletXHi, bulletXLo, bulletY
         LIBSPRITE_SETCOLOUR_VV 0, gray1
         LIBSPRITE_SETCOLOUR_VV 1, black
         LIBSPRITE_SETCOLOUR_VV 2, brown
+        LIBSPRITE_SETCOLOUR_VV 3, black
         LIBSPRITE_SETCOLOUR_VV 5, black
-        LIBSPRITE_SETMULTICOLORS_VV yellow, gray3
+        LIBSPRITE_SETMULTICOLORS_VV red, gray1
         rts
 
 UserInput
@@ -202,4 +220,68 @@ missileX
         sta missileXLo
 MoveMissileExit
         LIBSPRITE_SETPOSITION_AAAA missileSprite, missileXHi, missileXLo + 1, missileY
+        rts
+
+FireBullet
+        lda SIDRAND
+        cmp #51
+        bpl FireBulletExit
+        lda #1
+        sta bulletFired
+        LIBSPRITE_ENABLE_VV %00001000, true
+FireBulletExit
+        rts
+
+MoveBullet
+        lda bulletFired
+        cmp #00
+        beq MoveBulletExit
+        dec bulletY
+        inc bulletXLo
+        lda bulletY
+        cmp #10
+        bne UpdateBullet
+        LIBSPRITE_ENABLE_VV %00001000, false
+        lda #0
+        sta bulletFired
+        lda #90
+        sta bulletY
+        lda #60
+        sta bulletXLo
+UpdateBullet
+        LIBSPRITE_SETPOSITION_AAAA bulletSprite, bulletXHi, bulletXLo, bulletY
+MoveBulletExit
+        rts
+
+CheckSpriteCollision
+        LIBSPRITE_SPRITECOLLIDE_A planeSprite
+        beq @nocollision
+        lda #1
+        sta planeDestroyed
+@nocollision
+        rts
+
+PlaneExplosion
+        lda planeExplosionActive
+        beq ExitPlaneExplosion
+        lda planeExplosionLoop + 1
+        bne ExpLoopDecrease
+        lda #250
+        sta planeExplosionLoop
+        lda #05
+        sta planeExplosionLoop + 1
+        LIBSPRITE_SETFRAME_AA planeSprite, planeExplosionFrame
+        inc planeExplosionFrame
+        lda planeExplosionFrame
+        cmp #19
+        bne ExpLoopDecrease
+        lda #false
+        sta planeExplosionActive
+ExpLoopDecrease
+        dec planeExplosionLoop
+        bne ExitPlaneExplosion
+        dec planeExplosionLoop + 1
+        lda #250
+        sta planeExplosionLoop
+ExitPlaneExplosion
         rts
