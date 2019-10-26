@@ -4,8 +4,12 @@ InitVariables
         lda #52
         sta planeXLo + 1
         sta planeY
+        sta bombXLo + 1
+        lda #67
+        sta bombY
         lda #0
         sta planeXHi
+        sta bombXHi
         sta tankXHi
         sta turretXHi
         sta missileXHi
@@ -17,6 +21,10 @@ InitVariables
         sta planeDestroyed
         sta planeExplosionLoop
         sta planeExplosionLoop + 1
+        sta bombFired
+        sta bombHit
+        sta bombExplosionLoop
+        sta bombExplosionLoop + 1
         lda #128
         sta planeVelocity
         lda #1
@@ -45,10 +53,15 @@ InitVariables
         sta tankSpeed
         lda #3
         sta bulletSprite
+        lda #4
+        sta bombSprite
         lda #5
         sta missileSprite
         lda #7
         sta planeExplosionFrame
+        sta bombExplosionFrame
+        lda #bDormant
+        sta bombStatus
         rts
 
 InitGame
@@ -56,6 +69,7 @@ InitGame
         LIBSCREEN_SETVIC_AVV VMCR, 240, 12
         LIBSCREEN_SETCOLOURS_VVVVV white, white, black, black, black
         LIBGENERAL_INITRAND
+        LIBSPRITE_DATACOLLIDE_A bombSprite
         rts
 
 IntroScreen
@@ -90,6 +104,8 @@ InitSprites
         LIBSPRITE_SETFRAME_AV turretSprite, 2
         LIBSPRITE_MULTICOLORENABLE_AV bulletSprite, false
         LIBSPRITE_SETFRAME_AV bulletSprite, 3
+        LIBSPRITE_MULTICOLORENABLE_AV bombSprite, false
+        LIBSPRITE_SETFRAME_AV bombSprite, 4
         LIBSPRITE_MULTICOLORENABLE_AV missileSprite, false
         LIBSPRITE_SETFRAME_AV missileSprite, 5
         LIBSPRITE_ENABLE_VV %00000111, true
@@ -98,10 +114,12 @@ InitSprites
         LIBSPRITE_SETPOSITION_AAAA missileSprite, missileXHi, missileXLo + 1, missileY
         LIBSPRITE_SETPOSITION_AAAA turretSprite, turretXHi, turretXLo, turretY
         LIBSPRITE_SETPOSITION_AAAA bulletSprite, bulletXHi, bulletXLo, bulletY
+        LIBSPRITE_SETPOSITION_AAAA bombSprite, bombXHi, bombXLo + 1, bombY
         LIBSPRITE_SETCOLOUR_VV 0, gray1
         LIBSPRITE_SETCOLOUR_VV 1, black
         LIBSPRITE_SETCOLOUR_VV 2, brown
         LIBSPRITE_SETCOLOUR_VV 3, black
+        LIBSPRITE_SETCOLOUR_VV 4, black
         LIBSPRITE_SETCOLOUR_VV 5, black
         LIBSPRITE_SETMULTICOLORS_VV red, gray1
         rts
@@ -124,11 +142,21 @@ UserInput
         rts
 @right
         LIBJOY_GETJOY_V JoyRight
-        bne @noinput
+        bne @fire
         lda #64
         sta planeVelocity
         rts
-@noinput
+@fire
+        LIBJOY_GETJOY_V JoyFire
+        bne UserInputExit
+        lda bombStatus
+        cmp #bDormant
+        bne UserInputExit
+        lda #bReleased
+        sta bombStatus
+        LIBSPRITE_ENABLE_VV %00010000, true
+        rts
+UserInputExit
         lda #128
         sta planeVelocity
         rts
@@ -168,6 +196,120 @@ MovePlane
         LIBSPRITE_SETPOSITION_AAAA planeSprite, planeXHi, planeXLo + 1, planeY
         rts
 
+MoveBomb
+        lda bombStatus
+        cmp #bDormant
+        bne CheckReleased
+ResetBomb
+        lda planeXHi
+        sta bombXHi
+        lda planeXLo + 1
+        sta bombXLo + 1
+        lda planeXLo
+        sta bombXLo
+        LIBMATHS_ADD_8BIT_AVA planeY, 15, bombY
+UpdateBomb
+        LIBSPRITE_SETPOSITION_AAAA bombSprite, bombXHi, bombXLo + 1, bombY
+        rts
+CheckReleased
+        cmp #bReleased
+        bne @checkhit
+        inc bombY
+        dec bombXLo + 1
+        lda bombXLo + 1
+        cmp #$FF
+        bne UpdateBomb
+        lda bombXHi
+        cmp #1
+        bne @lowerX
+        lda #0
+        sta bombXHi
+        jmp UpdateBomb
+@lowerX
+        lda #1
+        sta bombXHi
+        lda #60
+        sta bombXLo + 1
+        jmp UpdateBomb
+@checkhit
+        cmp #bHit
+        bne checkexploding
+        lda bombXHi
+        cmp #0
+        bne notwall
+        lda bombXLo + 1
+        cmp #54
+        bcs notwall
+        cmp #38
+        bcc notwall
+        lda bombY
+        cmp #114
+        bcc notwall
+        jsr DamageWall
+notwall
+        LIBSPRITE_SETCOLOUR_VV 4, gray3
+        LIBSPRITE_MULTICOLORENABLE_AV bombSprite, true
+        lda #7
+        sta bombExplosionFrame + 1
+        lda #bExploding
+        sta bombStatus
+        rts
+checkexploding
+        cmp #bExploding
+        bne MoveBombExit
+        LIBSPRITE_SETFRAME_AA bombSprite, bombExplosionFrame + 1
+        LIBMATHS_ADD_16BIT_AVVA bombExplosionFrame, 128, 0, bombExplosionFrame
+        lda bombExplosionFrame + 1
+        cmp #20
+        bne MoveBombExit
+        LIBSPRITE_ENABLE_VV %00010000, false
+        LIBSPRITE_MULTICOLORENABLE_AV bombSprite, false
+        LIBSPRITE_SETFRAME_AV bombSprite, 4
+        LIBSPRITE_SETCOLOUR_VV 4, black
+        LIBSPRITE_DATACOLLIDE_A bombSprite
+        lda #bDormant
+        sta bombStatus
+        jmp ResetBomb
+MoveBombExit
+        rts
+
+DamageWall
+        lda bombY
+        ldx #0
+@loop
+        inx
+        sec
+        sbc #8
+        cmp #114
+        bcs @loop
+        ldy #3
+        lda bombXLo + 1
+        cmp #46
+        bcc w1
+        iny
+w1
+        lda #$40
+        sta zpLow
+        lda #$05
+        sta zpHigh
+@loop2
+        dex
+        LIBMATHS_ADD_16BIT_AVVA zpLow, 40, 0, zpLow
+        cpx #0
+        bne @loop2
+        lda (zpLow),y
+        cmp #32
+        beq drawwall
+        tax
+        inx
+        txa
+        cmp #70
+        bcc drawwall
+        lda #32
+drawwall
+        sta (zpLow),y
+        rts
+
 MoveTank
         lda tankDx
         cmp #00
@@ -191,7 +333,7 @@ MoveTank
 FireMissile
         lda SIDRAND
         cmp #51
-        bpl FireMissileExit
+        bcs FireMissileExit
         lda #1
         sta missileFired
         LIBSPRITE_ENABLE_VV %00100000, true
@@ -225,7 +367,7 @@ MoveMissileExit
 FireBullet
         lda SIDRAND
         cmp #51
-        bpl FireBulletExit
+        bcs FireBulletExit
         lda #1
         sta bulletFired
         LIBSPRITE_ENABLE_VV %00001000, true
@@ -253,12 +395,23 @@ UpdateBullet
 MoveBulletExit
         rts
 
-CheckSpriteCollision
+CheckPlaneCollision
         LIBSPRITE_SPRITECOLLIDE_A planeSprite
         beq @nocollision
         lda #1
         sta planeDestroyed
 @nocollision
+        rts
+
+CheckBombCollision
+        lda bombStatus
+        cmp #bReleased
+        bne @exit
+        LIBSPRITE_DATACOLLIDE_A bombSprite
+        beq @exit
+        lda #bHit
+        sta bombStatus
+@exit
         rts
 
 PlaneExplosion

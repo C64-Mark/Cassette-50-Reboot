@@ -67,6 +67,18 @@ planeExplosionFrame     byte 00
 planeExplosionLoop      byte 00, 00
 planeExplosionActive    byte 00
 
+bombXHi                 byte 00
+bombXLo                 byte 00, 00 ; fraction, integer
+bombY                   byte 00
+bombSprite              byte 00
+bombFired               byte 00
+bombHit                 byte 00
+bombExplosionFrame      byte 00, 00
+bombExplosionLoop       byte 00, 00
+bombExplosionActive     byte 00
+bombStatus              byte 00
+bombWallY               byte 00
+
 tankXHi                 byte 00
 tankXLo                 byte 00, 00 ; fraction, integer
 tankY                   byte 00
@@ -99,3 +111,9 @@ gfAlive                 = 1
 gfFlood                 = 2
 gfDying                 = 3
 gfDead                  = 4
+
+; bomb statuses
+bDormant                = 0
+bReleased               = 1
+bHit                    = 2
+bExploding              = 3
