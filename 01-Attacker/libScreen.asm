@@ -75,6 +75,18 @@ defm 	LIBSCREEN_WRITECHAR_VVA ;Length, Character, Target
 
         endm
 
+;Write a single char repeatedly to the screen with an indirect address
+defm 	LIBSCREEN_WRITECHAR_INDIRECT_VVA ;Length, Character, (Target)
+
+        ldy #/1
+@loop   dey
+        lda #/2
+        sta (/3),y
+        cpy #$00
+        bne @loop
+
+        endm
+        
 ;Set the colour of text on the screen
 defm 	LIBSCREEN_TEXTCOLOUR_VVA ;Length, Colour, Target
 

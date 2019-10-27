@@ -25,8 +25,14 @@ GameFlowStatusMenu
 
 GameFlowStatusAlive
         lda planeDestroyed
-        beq @exit
+        beq @flood
         lda #gfDying
+        sta gameStatus
+        jmp @exit
+@flood
+        lda wallBreached
+        beq @exit
+        lda #gfFlood
         sta gameStatus
 @exit
         rts
@@ -55,5 +61,11 @@ GameFlowStatusDead
         rts
 
 GameFlowStatusFlood
-        ;not yet active
-        rts
+        LIBSPRITE_ENABLE_VV %11111111, false
+        jsr Flood
+@loop
+        LIBJOY_GETJOY_V JoyFire
+        bne @loop
+        lda #gfMenu
+        sta gameStatus
+        rts        

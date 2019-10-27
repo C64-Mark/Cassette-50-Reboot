@@ -25,6 +25,8 @@ InitVariables
         sta bombHit
         sta bombExplosionLoop
         sta bombExplosionLoop + 1
+        sta wallBreached
+        sta wallBreachedX
         lda #128
         sta planeVelocity
         lda #1
@@ -139,12 +141,14 @@ UserInput
         bne @right
         lda #192
         sta planeVelocity
+        ;dec planeXLo + 1
         rts
 @right
         LIBJOY_GETJOY_V JoyRight
         bne @fire
         lda #64
         sta planeVelocity
+        ;inc planeXLo + 1
         rts
 @fire
         LIBJOY_GETJOY_V JoyFire
@@ -282,16 +286,22 @@ DamageWall
         sbc #8
         cmp #114
         bcs @loop
+        stx dbwallx
+        stx wallBreachedX
         ldy #3
         lda bombXLo + 1
         cmp #46
         bcc w1
         iny
 w1
+        sty dbwally
         lda #$40
         sta zpLow
         lda #$05
         sta zpHigh
+        cpx #14
+        bcc @loop2
+        ldx #13
 @loop2
         dex
         LIBMATHS_ADD_16BIT_AVVA zpLow, 40, 0, zpLow
@@ -306,8 +316,15 @@ w1
         cmp #70
         bcc drawwall
         lda #32
+        cpy #3
+        bne drawwall
+        sty wallBreached
 drawwall
         sta (zpLow),y
+        lda zpLow
+        sta floodZoneLow
+        lda zpHigh
+        sta floodZoneHigh
         rts
 
 MoveTank
@@ -437,4 +454,110 @@ ExpLoopDecrease
         lda #250
         sta planeExplosionLoop
 ExitPlaneExplosion
+        rts
+
+Flood
+        lda floodZoneLow
+        sta floodZoneColourL
+        lda floodZoneHigh
+        clc
+        adc #$D4
+        sta floodZoneColourH
+        ldy #3
+        lda #70
+        sta (floodZoneLow),y
+        tax
+        lda #blue
+        sta (floodZoneColourL),y
+        txa
+        iny
+        sta (floodZoneLow),y
+        lda #blue
+        sta (floodZoneColourL),y
+        iny
+        lda #78
+        sta (floodZoneLow),y
+        lda #blue
+        sta (floodZoneColourL),y
+        ldx wallBreachedX
+@loop
+        inx
+        LIBMATHS_ADD_16BIT_AVVA floodZoneLow, 40, 00, floodZoneLow
+        LIBMATHS_ADD_16BIT_AVVA floodZoneColourL, 40, 00, floodZoneColourL
+        lda #79
+        sta (floodZoneLow),y
+        lda #blue
+        sta (floodZoneColourL),y
+        cpx #13
+        bne @loop
+@loop3
+        ldy #27
+@loop2
+        lda #70
+        sta (floodZoneLow),y
+        lda #blue
+        sta (floodZoneColourL),y
+        dey
+        cpy #4
+        bne @loop2
+        LIBMATHS_SUBTRACT_16BIT_AVVA floodZoneLow, 40, 00, floodZoneLow
+        LIBMATHS_SUBTRACT_16BIT_AVVA floodZoneColourL, 40, 00, floodZoneColourL
+        dex
+        cpx wallBreachedX
+        bne @loop3
+        rts
+
+
+;debug space
+DbOut
+        lda #19
+        jsr krnCHROUT
+        ldx bombXLo + 1
+        lda #0
+        jsr $BDCD
+
+        lda #44
+        jsr krnCHROUT
+
+        ldx bombY
+        lda #0
+        jsr $BDCD
+
+        lda #44
+        jsr krnCHROUT
+
+        ldx dbwallx
+        lda #0
+        jsr $BDCD
+
+        lda #44
+        jsr krnCHROUT
+
+        ldx dbwally
+        lda #0
+        jsr $BDCD
+
+        lda #44
+        jsr krnCHROUT
+
+        ldx zpLow2
+        lda #0
+        jsr $BDCD
+
+        lda #44
+        jsr krnCHROUT
+
+        ldx zpHigh2
+        lda #0
+        jsr $BDCD
+
+        lda #32
+        jsr krnCHROUT
+
+        lda #32
+        jsr krnCHROUT
+
+        lda #32
+        jsr krnCHROUT
+
         rts

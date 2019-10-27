@@ -79,6 +79,9 @@ bombExplosionActive     byte 00
 bombStatus              byte 00
 bombWallY               byte 00
 
+wallBreached            byte 00
+wallBreachedX           byte 00
+
 tankXHi                 byte 00
 tankXLo                 byte 00, 00 ; fraction, integer
 tankY                   byte 00
@@ -117,3 +120,7 @@ bDormant                = 0
 bReleased               = 1
 bHit                    = 2
 bExploding              = 3
+
+;debug
+dbwallx                 byte 00
+dbwally                 byte 00

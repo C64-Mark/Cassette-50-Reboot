@@ -24,8 +24,7 @@ GameLoop
         jsr CheckPlaneCollision
         jsr CheckBombCollision
 
-        ;lda bombStatus
-        ;sta $0400
+        ;jsr DbOut
 
         jsr GameFlowUpdate
 

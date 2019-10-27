@@ -3,8 +3,10 @@
 ;-------------------------------------------------------------------------------
 
 ; $00-$01       Reserved for IO
-zpTemp          = $02 ;Unused byte
-ScnAdr          = $03
+floodZoneLow    = $02
+floodZoneHigh   = $03
+floodZoneColourL = $04
+floodZoneColourH = $05
 
 ; $03-$8F       Reserved for BASIC                
 LASTKEY         = $C5 ;current key pressed

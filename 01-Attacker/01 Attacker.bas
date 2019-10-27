@@ -1,4 +1,4 @@
-1 print"{clear}":ra=0:in=.2:rem poke808,225:poke775,200
+1 print"{clear}":ra=0:in=0:rem poke808,225:poke775,200
 2 poke53280,1:poke53281,1:gosub3000
 3 poke52,48:poke56,48
 4 poke53272,(peek(53272)and240)+12
@@ -53,7 +53,7 @@
 81 print"{brown}{space*5}n"
 82 print"{space*3}klm"
 83 print"{space*3}ij"
-84 print"{light gray}{space*3}@@"
+84 print"{light gray}{space*3}@"
 85 da$="{blue}fff{light gray}e ":fori=1to13:printda$:next
 86 print"{brown}$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$${home}":poke 2023,36:poke 56295,9
 87 c=54272
