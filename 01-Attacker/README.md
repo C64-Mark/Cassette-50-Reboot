@@ -4,6 +4,26 @@ Attacker
 
 Changelog
 
+27.10.2019
+
+-added wall breach and flooding  
+-debug mode added  
+
+26.10.2019
+
+-bomb collision and explosion added  
+-wall damage routine added (although needs tweaks)  
+-bomb explosion cycle fixed to run as rest of game updates  
+-fix to missile/bullet fire ratios  
+-tweaks to sprite positions
+
+25.10.2019
+
+-Added explosion sprites  
+-Turret bullet fire implemented  
+-Sprite to sprite collision detection added  
+-Game flow implemented  
+
 24.10.2019
 
 -Changed char graphics for plane. turret and tank into sprites  
@@ -13,18 +33,3 @@ Changelog
 -Plane movement implemented  
 -Tank missile fire implemented  
 -Turret sprite enabled  
-
-25.10.2019
-
--Added explosion sprites  
--Turret bullet fire implemented  
--Sprite to sprite collision detection added  
--Game flow implemented  
-
-26.10.2019
-
--bomb collision and explosion added  
--wall damage routine added (although needs tweaks)  
--bomb explosion cycle fixed to run as rest of game updates  
--fix to missile/bullet fire ratios  
--tweaks to sprite positions
