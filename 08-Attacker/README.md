@@ -1,6 +1,6 @@
-Game #1
+Cascade 50 Cassette - Reboot
 
-Attacker
+Game #08: Attacker
 
 Changelog
 
