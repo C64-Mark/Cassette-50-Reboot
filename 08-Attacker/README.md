@@ -4,6 +4,10 @@ Attacker
 
 Changelog
 
+29.10.2019
+
+Rename of folder/files from 01 to 08 to reflect position of game on the original tape
+
 27.10.2019
 
 -added wall breach and flooding  
