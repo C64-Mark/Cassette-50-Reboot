@@ -1,6 +1,6 @@
-Cascade 50 Cassette
+Cascade 50 Cassette - Reboot
 
-Game #1: Maze Eater
+Game #01: Maze Eater
 
 Changelog
 
