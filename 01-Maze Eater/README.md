@@ -4,6 +4,14 @@ Game #01: Maze Eater
 
 Changelog
 
+03.11.2019
+
+- intro screen created  
+- game screen layout created  
+- sprites enabled  
+- joystick control implemented  
+- pacman initial movement done  
+
 29.10.2019
 
 -commented original BASIC version  
