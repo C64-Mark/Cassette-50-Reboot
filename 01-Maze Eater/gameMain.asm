@@ -5,22 +5,21 @@
 
 Initialise
         jsr InitVariables
-        ;jsr InitGame
-        ;jsr IntroScreen
-        ;jsr InitGameScreen
-        ;jsr InitSprites
+        jsr InitGame
+        jsr IntroScreen
+        jsr InitGameScreen
+        jsr InitSprites
 
 GameLoop
         LIBSCREEN_WAIT_V #250
 
-        ;jsr UserInput
-        ;jsr UpdatePacMan
+        jsr UserInput
+        jsr UpdatePacman
         ;jsr UpdateGhost
         ;jsr DisplayFruit
         ;jsr SpriteCollisionDetection
         ;jsr EatenPill
         
-        inc BDCOL
         jsr GameFlowUpdate
 
         lda gameStatus

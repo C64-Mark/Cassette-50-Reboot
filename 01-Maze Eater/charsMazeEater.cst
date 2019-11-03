@@ -98,4 +98,17 @@
       <data>0</data>
     </chardata>
   </character>
+  <character>
+    <charcode>71</charcode>
+    <chardata>
+      <data>254</data>
+      <data>254</data>
+      <data>254</data>
+      <data>254</data>
+      <data>254</data>
+      <data>254</data>
+      <data>254</data>
+      <data>0</data>
+    </chardata>
+  </character>
 </charset>

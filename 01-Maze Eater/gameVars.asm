@@ -3,21 +3,23 @@
 gameStatus              byte 00
 
 pacmanSprite            byte 00
-pacmanX                 byte 00
+pacmanX                 byte 00, 00
 pacmanY                 byte 00
 pacmanLives             byte 00
 pacmanAnimFrame         byte 00
 pacmanScreenLocation    byte 00, 00
+pacmanScreenXPixel      byte 00
+pacmanScreenYPixel      byte 00
 
 ghostSprite             byte 00
-ghostX                  byte 00
+ghostX                  byte 00, 00
 ghostY                  byte 00
 ghostAnimFrame          byte 00
 ghostColour             byte 00
 ghostScreenLocation     byte 00, 00
 
 fruitSprite             byte 00
-fruitX                  byte 00
+fruitX                  byte 00, 00
 fruitY                  byte 00
 fruitActive             byte 00
 fruitColour             byte 00
@@ -31,6 +33,55 @@ difficultyLevel         byte 00
 levelNumber             byte 00
 score                   byte 00, 00, 00, 00, 00, 00, 00
 
+
+txtTitle                text "{clear}{down*8}{yellow}wwwww wwww wwww wwww{return}"
+                        text "{red}w w w w  w    w w{return}"
+                        text "{purple}w w w w  w   w  w{return}"
+                        text "{blue}w w w wwww  w   www  {yellow}e a t e r{return}"
+                        text "{green}w w w w  w w    w{return}"
+                        text "{dark gray}w w w w  w wwww wwww{return}"
+                        text "{cm y*21}{return*2}"
+                        text "{yellow}press joy up/down to change level{return}"
+                        text "press fire to start"
+                        byte 00
+
+scnMazeA                text "{home}{gray}{G*29}{return}"
+                        text "{gray}G{red}F{light gray}{E*25}{red}F{gray}G{return}"
+                        text "{gray}G{light gray}E{gray}GGG{light gray}E{gray}GGGGG{light gray}E{gray}GG{light gray}E{gray}GG{light gray}E{gray}GGGGG{light gray}E{gray}GGG{light gray}E{gray}G{return}"
+                        text "{gray}G{light gray}E{gray}GGG{light gray}E{gray}GGGGG{light gray}E{gray}GG{light gray}E{gray}GG{light gray}E{gray}GGGGG{light gray}E{gray}GGG{light gray}E{gray}G{return}"
+                        text "{gray}G{light gray}E{gray}GGG{light gray}E{gray}GGGGG{light gray}E{gray}GG{light gray}E{gray}GG{light gray}E{gray}GGGGG{light gray}E{gray}GGG{light gray}E{gray}G{return}"
+                        text "{gray}G{light gray}E{gray}GGG{light gray}EEEEEEEEEEEEEEEEEEE{gray}GGG{light gray}E{gray}G{return}"
+                        byte 00
+scnMazeB                text "{gray}G{light gray}E{gray}GGGGGG{light gray}E{gray}GG{light gray}E{gray}GGGGG{light gray}E{gray}GG{light gray}E{gray}GGGGGG{light gray}E{gray}G{return}"
+                        text "{gray}G{light gray}E{gray}GGGGGG{light gray}E{gray}GG{light gray}E{gray}GGGGG{light gray}E{gray}GG{light gray}E{gray}GGGGGG{light gray}E{gray}G{return}"
+                        text "{gray}G{light gray}E{gray}GGGGGG{light gray}E{gray}GG{light gray}E{gray}GGGGG{light gray}E{gray}GG{light gray}E{gray}GGGGGG{light gray}E{gray}G{return}"
+                        text "{gray}G{light gray}E{gray}GGG{light gray}EEEE{gray}GG{light gray}E{gray}GGGGG{light gray}E{gray}GG{light gray}EEEE{gray}GGG{light gray}E{gray}G{return}"
+                        text "{gray}G{light gray}EEEEE{gray}GG{light gray}EEEEEEEEEEEEE{gray}GG{light gray}EEEEE{gray}G{return}"
+                        text "{gray}G{light gray}EEEEE{gray}GGGGGGG{light gray}EEE{gray}GGGGGGG{light gray}EEEEE{gray}G{return}"
+                        byte 00
+scnMazeC                text "{gray}G{light gray}EEEEE{gray}GGGGGGG{light gray}E E{gray}GGGGGGG{light gray}EEEEE{gray}G{return}"
+                        text "{gray}G{light gray}EEEEE{gray}GGGGGGG{light gray}EEE{gray}GGGGGGG{light gray}EEEEE{gray}G{return}"
+                        text "{gray}G{light gray}EEEEE{gray}GG{light gray}EEEEEEEEEEEEE{gray}GG{light gray}EEEEE{gray}G{return}"
+                        text "{gray}G{light gray}E{gray}GGG{light gray}EEEE{gray}GGGGGGGGGGG{light gray}EEEE{gray}GGG{light gray}E{gray}G{return}"
+                        text "{gray}G{light gray}E{gray}GGGGGG{light gray}E{gray}GGGGGGGGGGG{light gray}E{gray}GGGGGG{light gray}E{gray}G{return}"
+                        text "{gray}G{light gray}E{gray}GGGGGG{light gray}E{gray}GG{light gray}E{gray}GGGGG{light gray}E{gray}GG{light gray}E{gray}GGGGGG{light gray}E{gray}G{return}"                        
+                        byte 00
+scnMazeD                text "{gray}G{light gray}E{gray}GGGGGG{light gray}E{gray}GG{light gray}E{gray}GGGGG{light gray}E{gray}GG{light gray}E{gray}GGGGGG{light gray}E{gray}G{return}"
+                        text "{gray}G{light gray}E{gray}GGG{light gray}EEEEEEEEEEEEEEEEEEE{gray}GGG{light gray}E{gray}G{return}"
+                        text "{gray}G{light gray}E{gray}GGG{light gray}E{gray}GGGGGGGG{light gray}E{gray}GGGGGGGG{light gray}E{gray}GGG{light gray}E{gray}G{return}"
+                        text "{gray}G{light gray}E{gray}GGG{light gray}E{gray}GGGGG{light gray}E{gray}GG{light gray}E{gray}GG{light gray}E{gray}GGGGG{light gray}E{gray}GGG{light gray}E{gray}G{return}"
+                        text "{gray}G{light gray}E{gray}GGG{light gray}E{gray}GGGGG{light gray}E{gray}GG{light gray}E{gray}GG{light gray}E{gray}GGGGG{light gray}E{gray}GGG{light gray}E{gray}G{return}"
+                        text "{gray}G{red}F{light gray}EEEEEEEEEEEEEEEEEEEEEEEEE{red}F{gray}G{return}"
+                        byte 00
+scnMazeE                text "{gray}GGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+                        byte 00
+
+scnStats                text "{home}{down}{right*32}{yellow}Emaze{down}{left*5}eater"
+                        text "{down*3}{left*5}{blue}score{down*2}{left*6}{white}0000000"
+                        text "{down*3}{left*7}{blue}hiscore{down*2}{left*7}{white}0000000"
+                        text "{down*3}{left*6}{blue}lives{down*2}{left*3}{white}3"
+                        text "{down*3}{left*3}{blue}fruit{down*2}{left*5}{pink}{sh asterisk}{red}A{orange}B{yellow}C{green}D"
+                        byte 00
 
 ;constants
 spriteNumberMask        byte %00000001, %00000010, %00000100, %00001000
