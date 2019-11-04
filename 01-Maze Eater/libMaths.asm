@@ -174,6 +174,24 @@ defm 	LIBMATHS_BCD_ADD_16BIT_AVA ;Source, Value, Target
         cld
 
         endm
+
+defm 	LIBMATHS_BCD_ADD_24BIT_AVA ;Source, Value, Target
+
+        sed
+        clc
+        lda /1
+        adc #/2
+        sta /3
+        lda /1 + 1
+        adc #0
+        sta /3 + 1
+        lda /1 + 2
+        adc #0
+        sta /3 + 2
+        cld
+
+        endm
+
         
 defm LIBMATHS_BCD_ADD_8BIT_AVA ; addSource, bytValue, addTarget
 

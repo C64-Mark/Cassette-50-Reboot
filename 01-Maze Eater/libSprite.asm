@@ -99,6 +99,18 @@ defm    LIBSPRITE_SETPOSITION_VAA ;SpriteNumber, X Source, Y Source
         sta SPRY0,y
         
         endm
+
+defm    LIBSPRITE_SETPOSITION_AAA ;SpriteNumber, X Source, Y Source
+
+        lda /1
+        asl
+        tay
+        lda /2
+        sta SPRX0,y
+        lda /3
+        sta SPRY0,y
+        
+        endm
         
 defm    LIBSPRITE_SETPOSITION_AAAA ;SpriteNumber, XHi, XLo, Y
 

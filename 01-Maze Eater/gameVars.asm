@@ -1,4 +1,6 @@
 ;game variables
+; dot/pill = 10pts, fruit=500, ghost=100
+
 
 gameStatus              byte 00
 
@@ -7,9 +9,10 @@ pacmanX                 byte 00, 00
 pacmanY                 byte 00
 pacmanLives             byte 00
 pacmanAnimFrame         byte 00
-pacmanScreenLocation    byte 00, 00
-pacmanScreenXPixel      byte 00
-pacmanScreenYPixel      byte 00
+pacmanLastFrame         byte 00
+pacmanScreenAddress     byte 00, 00
+pacmanXOffset           byte 00
+pacmanYOffset           byte 00
 
 ghostSprite             byte 00
 ghostX                  byte 00, 00
@@ -31,7 +34,7 @@ pillTimer               byte 00, 00
 
 difficultyLevel         byte 00
 levelNumber             byte 00
-score                   byte 00, 00, 00, 00, 00, 00, 00
+score                   byte 00, 00, 00
 
 
 txtTitle                text "{clear}{down*8}{yellow}wwwww wwww wwww wwww{return}"
@@ -79,13 +82,15 @@ scnMazeE                text "{gray}GGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
 scnStats                text "{home}{down}{right*32}{yellow}Emaze{down}{left*5}eater"
                         text "{down*3}{left*5}{blue}score{down*2}{left*6}{white}0000000"
                         text "{down*3}{left*7}{blue}hiscore{down*2}{left*7}{white}0000000"
-                        text "{down*3}{left*6}{blue}lives{down*2}{left*3}{white}3"
-                        text "{down*3}{left*3}{blue}fruit{down*2}{left*5}{pink}{sh asterisk}{red}A{orange}B{yellow}C{green}D"
+                        text "{down*3}{left*7}{blue}liv lev{down*2}{left*6}{white}3   1"
+                        text "{down*3}{left*5}{blue}fruit{down*2}{left*5}{pink}{sh asterisk}{red}A{orange}B{yellow}C{green}D"
                         byte 00
 
 ;constants
 spriteNumberMask        byte %00000001, %00000010, %00000100, %00001000
                         byte %00010000, %00100000, %01000000, %10000000
+
+throttleSpeed           = 60
 
 gfMenu                  = 0
 gfAlive                 = 1

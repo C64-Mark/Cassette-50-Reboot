@@ -13,13 +13,20 @@ Initialise
 GameLoop
         LIBSCREEN_WAIT_V #250
 
+        jsr DisplayStats
         jsr UserInput
-        jsr UpdatePacman
-        ;jsr UpdateGhost
+        jsr CalculatePacmanScreenAddress
+        jsr MoveGhost
+        jsr UpdateSprites
+        jsr PacmanEating
+        jsr PacmanCollision
         ;jsr DisplayFruit
         ;jsr SpriteCollisionDetection
         ;jsr EatenPill
         
+        
+        ;jsr dbvarprint
+        jsr Throttle
         jsr GameFlowUpdate
 
         lda gameStatus
