@@ -180,7 +180,7 @@ defm 	LIBMATHS_BCD_ADD_24BIT_AVA ;Source, Value, Target
         sed
         clc
         lda /1
-        adc #/2
+        adc #$/2
         sta /3
         lda /1 + 1
         adc #0

@@ -14,16 +14,13 @@ GameLoop
         LIBSCREEN_WAIT_V #250
 
         jsr DisplayStats
+        jsr DisplayFruit
         jsr UserInput
         jsr CalculatePacmanScreenAddress
         jsr MoveGhost
         jsr UpdateSprites
         jsr PacmanEating
         jsr PacmanCollision
-        ;jsr DisplayFruit
-        ;jsr SpriteCollisionDetection
-        ;jsr EatenPill
-        
         
         ;jsr dbvarprint
         jsr Throttle

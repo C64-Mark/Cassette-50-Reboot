@@ -29,11 +29,41 @@ GameFlowStatusMenu
         rts
 
 GameFlowStatusAlive
-        ;not yet implemented
+        lda pillActive
+        cmp #0
+        beq @checkcollision
+        lda #gfPillEaten
+        sta gameStatus
+        rts
+@checkcollision
+        lda pacmanGhostCollision
+        cmp #0
+        beq @exit
+        lda #50
+        sta ghostX
+        lda #80
+        sta ghostY
+        LIBSPRITE_SETPOSITION_AAA ghostSprite, ghostX, ghostY
+        lda #133
+        sta pacmanX
+        lda #231
+        sta pacmanY
+        LIBSPRITE_SETPOSITION_AAA pacmanSprite, pacmanX, pacmanY
+        lda SPRCSP
+        lda #0
+        sta pacmanGhostCollision
+        dec pacmanLives
+        lda pacmanLives
+        cmp #$FF
+        bne @exit
+        lda #gfDying
+        sta gameStatus
+@exit
         rts
 
-GameFlowStatusDying
-        ;not yet implemented
+GameFlowStatusDying        
+        lda #gfMenu
+        sta gameStatus
         rts
 
 GameFlowStatusDead
@@ -41,7 +71,30 @@ GameFlowStatusDead
         rts
 
 GameFlowStatusPillEaten
-        ;not yet implemented
+        lda pacmanGhostCollision
+        cmp #0
+        beq @changecolour
+        lda #false
+        sta pacmanGhostCollision
+        lda #50
+        sta ghostX
+        lda #80
+        sta ghostY
+        LIBSPRITE_SETPOSITION_AAA ghostSprite, ghostX, ghostY
+        LIBMATHS_BCD_ADD_24BIT_AVA score, 10, score
+        lda SPRCSP
+        rts
+@changecolour
+        inc ghostColour
+        LIBSPRITE_SETCOLOUR_AA ghostSprite, ghostColour
+        dec pillTimer
+        bne @exit
+        LIBSPRITE_SETCOLOUR_AV ghostSprite, red
+        lda #0
+        sta pillActive
+        lda #gfAlive
+        sta gameStatus
+@exit
         rts
 
 GameFlowStatusHiScore

@@ -6,6 +6,7 @@ InitVariables
         sta pacmanSprite
         sta pacmanAnimFrame
         sta pacmanLastFrame
+        sta pacmanGhostCollision
         sta dotsEaten
         sta pillActive
         sta pillTimer
@@ -16,6 +17,7 @@ InitVariables
         sta score
         sta score + 1
         sta score + 2
+        sta fruitNumber
 
         lda #1
         sta ghostSprite
@@ -25,7 +27,6 @@ InitVariables
         lda #2
         sta fruitSprite
         sta ghostColour
-        sta fruitColour
 
         lda #3
         sta pacmanLives
@@ -55,6 +56,7 @@ InitGame
         LIBSCREEN_SET1000_AV SCREENRAM, space
         LIBSCREEN_SETVIC_AVV VMCR, 240, 12
         LIBSCREEN_SETCOLOURS_VVVVV black, black, black, black, black
+        LIBGENERAL_INITRAND
         rts
 
 IntroScreen
@@ -78,14 +80,12 @@ InitSprites
         LIBSPRITE_SETFRAME_AA pacmanSprite, pacmanAnimFrame
         LIBSPRITE_SETFRAME_AA ghostSprite, ghostAnimFrame
         LIBSPRITE_MULTICOLORENABLE_AV ghostSprite, true
-        LIBSPRITE_SETFRAME_AV fruitSprite, 7
-        LIBSPRITE_ENABLE_VV %00000111, true
+        LIBSPRITE_ENABLE_VV %00000011, true
         LIBSPRITE_SETPOSITION_AAAA pacmanSprite, pacmanX + 1, pacmanX, pacmanY
         LIBSPRITE_SETPOSITION_AAAA ghostSprite, ghostX + 1, ghostX, ghostY
         LIBSPRITE_SETPOSITION_AAAA fruitSprite, fruitX + 1, fruitX, fruitY
         LIBSPRITE_SETCOLOUR_VV 0, yellow
         LIBSPRITE_SETCOLOUR_VV 1, red
-        LIBSPRITE_SETCOLOUR_VV 2, lightred
         LIBSPRITE_SETMULTICOLORS_VV white, black
         rts
 
@@ -259,6 +259,8 @@ PacmanEating
         sta (zpLow),y
         lda #true
         sta pillActive
+        lda #180
+        sta pillTimer
 @exit
         rts
 
@@ -297,6 +299,11 @@ DisplayStats
         inx
         cpx #3
         bne @loop
+        ;lives
+        lda pacmanLives
+        clc
+        adc #$30
+        sta $06C8
         rts
 
 PacmanCollision
@@ -308,34 +315,65 @@ PacmanCollision
         beq @exit
         cmp #6
         beq @exit
-        ;collided with ghost, check for pill active
+        lda #true
+        sta pacmanGhostCollision
 @exit
         rts
 @fruit
-        ;collided with fruit, check fruit active
-        LIBMATHS_BCD_ADD_24BIT_AVA score, 50, score
+        LIBMATHS_BCD_ADD_24BIT_AVA score,50, score
         LIBSPRITE_ENABLE_VV %00000100, false
+        lda #false
+        sta fruitActive
+        inc fruitNumber
+        inc fruitFrame
+        lda fruitNumber
+        cmp #5
+        bne @exit
+        lda #0
+        sta fruitNumber
+        lda #7
+        sta fruitFrame
+@exit
         rts
+
+DisplayFruit
+        lda fruitActive
+        bne exitdisplayfruit
+        lda #1
+        cmp SIDRAND
+        bcc exitdisplayfruit
+        LIBSPRITE_SETFRAME_AA fruitSprite, fruitFrame
+        ldy fruitNumber
+        lda fruitColours,y
+        sta fruitActiveColour
+        sta $DB90,y
+        LIBSPRITE_SETCOLOUR_VA 2, fruitActiveColour
+        LIBSPRITE_ENABLE_VV %00000100, true
+        lda #true
+        sta fruitActive
+exitdisplayfruit
+        rts
+
 
 ;debug space
 dbvarprint
         lda #19
         jsr krnCHROUT
-        ldx ghostX
+        ldx pillTimer
         lda #0
         jsr $BDCD
 
         lda #44
         jsr krnCHROUT
 
-        ldx ghostY
+        ldx #0
         lda #0
         jsr $BDCD
 
         lda #44
         jsr krnCHROUT
 
-        ldx ghostSprite
+        ldx #0
         lda #0
         jsr $BDCD
 

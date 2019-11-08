@@ -79,6 +79,29 @@ defm    LIBSPRITE_SETCOLOUR_VV ;SpriteNumber, Value
         
         endm
 
+defm    LIBSPRITE_SETCOLOUR_VA ;SpriteNumber, Address
+
+        lda /2
+        sta SPRCOL0 + /1
+        
+        endm
+
+defm    LIBSPRITE_SETCOLOUR_AA ;SpriteNumber, Address
+
+        lda /2
+        ldy /1
+        sta SPRCOL0,y
+        
+        endm
+
+defm    LIBSPRITE_SETCOLOUR_AV ;SpriteNumber, Value
+
+        lda #/2
+        ldy /1
+        sta SPRCOL0,y
+        
+        endm
+        
 defm    LIBSPRITE_EXPAND_VV ;X-expand, Y-expand
 
         lda #/1
@@ -190,5 +213,23 @@ defm    LIBSPRITE_ISANIMPLAYING_A ;Sprite Number
 
         ldy /1
         lda spriteAnimsActive,y
+
+        endm
+
+defm    LIBSPRITE_CHECKPOS_AVVAVVA ;Y, min, max, X, min, max, result
+
+        lda /1 ;shipY + 1
+        cmp #/2 ;228
+        bcc @done
+        cmp #/3
+        bcs @done
+        lda /4 ;shipXLo + 1
+        cmp #/5 ;63
+        bcc @done
+        cmp #/6 ;66
+        bcs @done
+        lda #true
+        sta /7
+@done
 
         endm

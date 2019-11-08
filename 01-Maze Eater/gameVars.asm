@@ -25,12 +25,15 @@ fruitSprite             byte 00
 fruitX                  byte 00, 00
 fruitY                  byte 00
 fruitActive             byte 00
-fruitColour             byte 00
+fruitNumber             byte 00
+fruitActiveColour       byte 00
+fruitColours            byte lightred, red, orange, yellow, green
 fruitFrame              byte 00
 
 dotsEaten               byte 00
 pillActive              byte 00
-pillTimer               byte 00, 00
+pillTimer               byte 00
+pacmanGhostCollision    byte 00
 
 difficultyLevel         byte 00
 levelNumber             byte 00
@@ -83,7 +86,7 @@ scnStats                text "{home}{down}{right*32}{yellow}Emaze{down}{left*5}e
                         text "{down*3}{left*5}{blue}score{down*2}{left*6}{white}0000000"
                         text "{down*3}{left*7}{blue}hiscore{down*2}{left*7}{white}0000000"
                         text "{down*3}{left*7}{blue}liv lev{down*2}{left*6}{white}3   1"
-                        text "{down*3}{left*5}{blue}fruit{down*2}{left*5}{pink}{sh asterisk}{red}A{orange}B{yellow}C{green}D"
+                        text "{down*3}{left*5}{blue}fruit{down*2}{left*5}{black}{sh asterisk}ABCD{white}"
                         byte 00
 
 ;constants

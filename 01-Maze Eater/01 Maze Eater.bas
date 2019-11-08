@@ -35,7 +35,7 @@
 272 print"{home}{down*12}";tab(30);li
 273 print"{home}{down*20}";tab(31);a$
 280 jv=peek(56321):jv=15-(jvand15):pokev+30,0:poke2042,fr
-300 ifdo=100andfp=0thenpokev+21,7
+300 ifdo=10andfp=0thenpokev+21,7
 310 print"{home}{down*4}{blue}";tab(30);sc
 311 ifco=0then400
 360 ifco=1andjv=4thenx=x-8:c=c-1:poke2040,202
@@ -57,11 +57,11 @@
 495 ifx>245thengosub710
 500 ify>225thengosub710
 505 ify<50thengosub710
-506 ifdo<272then560
-510 ifdo=272ands=2thenpokev+32,0:pokev+33,0:ee=0:en=0:gosub770:goto810
-520 ifdo=272thens=s+1:pokev+21,3:rr=rr+1:ee=0:en=0
-530 ifdo=272ands=2thenco=1:pokev+33,0:pokev+32,0:do=0:ee=0:gosub810:le=le+1
-540 ifdo=272ands=1thenpokev+33,0:pokev+32,0:do=0:ee=0:en=0:gosub810
+506 ifdo<20then560
+510 ifdo=20ands=2thenpokev+32,0:pokev+33,0:ee=0:en=0:gosub770:goto810
+520 ifdo=20thens=s+1:pokev+21,3:rr=rr+1:ee=0:en=0
+530 ifdo=20ands=2thenco=1:pokev+33,0:pokev+32,0:do=0:ee=0:gosub810:le=le+1
+540 ifdo=20ands=1thenpokev+33,0:pokev+32,0:do=0:ee=0:en=0:gosub810
 545 ifpeek(c)=32then580
 560 ifpeek(c)=81thenee=1:en=30:fora=0to100step30:pokeh,a*2:forb=0to50:nextb,a
 570 ifpeek(c)=46orpeek(c)=81orpeek(c)=99thenpokec,32:sc=sc+10:do=do+1:gosub790
