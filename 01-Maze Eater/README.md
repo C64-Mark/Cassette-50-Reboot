@@ -4,6 +4,13 @@ Game #01: Maze Eater
 
 Changelog
 
+08.11.2019
+
+- ghost flashes when pill eaten  
+- pacman eats flashing ghost - score 100  
+- lives added/updated on collision with non-flashing ghost  
+- rough exit to menu when all lives lost (needs proper game over screen)  
+
 04.11.2019
 
 - pacman wall collision check done  
