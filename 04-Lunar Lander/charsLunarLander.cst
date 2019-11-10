@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<charset>
+  <FileVersion>2</FileVersion>
+  <BK1>07</BK1>
+  <BK2>77</BK2>
+  <Col3>37</Col3>
+  <Reversed>False</Reversed>
+  <Multicolour>False</Multicolour>
+  <Uppercase>True</Uppercase>
+  <character>
+    <charcode>64</charcode>
+    <chardata>
+      <data>255</data>
+      <data>255</data>
+      <data>255</data>
+      <data>255</data>
+      <data>255</data>
+      <data>255</data>
+      <data>255</data>
+      <data>255</data>
+    </chardata>
+  </character>
+  <character>
+    <charcode>65</charcode>
+    <chardata>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>255</data>
+      <data>85</data>
+      <data>255</data>
+    </chardata>
+  </character>
+</charset>
