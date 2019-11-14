@@ -16,7 +16,7 @@ pacmanYOffset           byte 00
 
 ghostSprite             byte 00
 ghostX                  byte 00, 00
-ghostY                  byte 00
+ghostY                  byte 00, 00
 ghostAnimFrame          byte 00
 ghostColour             byte 00
 ghostScreenLocation     byte 00, 00
@@ -30,12 +30,12 @@ fruitActiveColour       byte 00
 fruitColours            byte lightred, red, orange, yellow, green
 fruitFrame              byte 00
 
-dotsEaten               byte 00
+dotsEaten               byte 00, 00
 pillActive              byte 00
 pillTimer               byte 00
 pacmanGhostCollision    byte 00
 
-difficultyLevel         byte 00
+difficultyLevel         byte 00, 00
 levelNumber             byte 00
 score                   byte 00, 00, 00
 
@@ -87,6 +87,9 @@ scnStats                text "{home}{down}{right*32}{yellow}Emaze{down}{left*5}e
                         text "{down*3}{left*7}{blue}hiscore{down*2}{left*7}{white}0000000"
                         text "{down*3}{left*7}{blue}liv lev{down*2}{left*6}{white}3   1"
                         text "{down*3}{left*5}{blue}fruit{down*2}{left*5}{black}{sh asterisk}ABCD{white}"
+                        byte 00
+
+scnGameOver             text "{home}game over{down*2}{left*9}press fire to restart"
                         byte 00
 
 ;constants

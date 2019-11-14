@@ -21,6 +21,7 @@ GameLoop
         jsr UpdateSprites
         jsr PacmanEating
         jsr PacmanCollision
+        jsr CheckEndOfLevel
         
         ;jsr dbvarprint
         jsr Throttle

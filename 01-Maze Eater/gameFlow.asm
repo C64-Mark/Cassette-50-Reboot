@@ -9,7 +9,7 @@ gfStatusJumpTableLo             byte <GameFlowStatusMenu
 gfStatusJumpTableHi             byte >GameFlowStatusMenu
                                 byte >GameFlowStatusAlive
                                 byte >GameFlowStatusPillEaten
-                                byte <GameFlowStatusLevelComplete
+                                byte >GameFlowStatusLevelComplete
                                 byte >GameFlowStatusDying
                                 byte >GameFlowStatusDead
                                 byte <GameFlowStatusHiScore
@@ -40,10 +40,10 @@ GameFlowStatusAlive
         cmp #0
         beq @exit
         lda #50
-        sta ghostX
+        sta ghostX + 1
         lda #80
-        sta ghostY
-        LIBSPRITE_SETPOSITION_AAA ghostSprite, ghostX, ghostY
+        sta ghostY + 1
+        LIBSPRITE_SETPOSITION_AAA ghostSprite, ghostX + 1, ghostY + 1
         lda #133
         sta pacmanX
         lda #231
@@ -62,12 +62,23 @@ GameFlowStatusAlive
         rts
 
 GameFlowStatusDying        
-        lda #gfMenu
+        lda #gfDead
         sta gameStatus
         rts
 
 GameFlowStatusDead
-        ;not yet implemented
+        LIBSPRITE_ENABLE_VV %00000111, false
+        LIBSCREEN_SET1000_AV SCREENRAM, space
+        LIBSCREEN_PRINT_A scnGameOver
+@response
+        LIBJOY_GETJOY_V JoyFire
+        bne @response
+        lda #gfMenu
+        sta gameStatus
+        ldx #0
+@delay
+        inx
+        bne @delay
         rts
 
 GameFlowStatusPillEaten
@@ -77,10 +88,10 @@ GameFlowStatusPillEaten
         lda #false
         sta pacmanGhostCollision
         lda #50
-        sta ghostX
+        sta ghostX + 1
         lda #80
-        sta ghostY
-        LIBSPRITE_SETPOSITION_AAA ghostSprite, ghostX, ghostY
+        sta ghostY + 1
+        LIBSPRITE_SETPOSITION_AAA ghostSprite, ghostX + 1, ghostY + 1
         LIBMATHS_BCD_ADD_24BIT_AVA score, 10, score
         lda SPRCSP
         rts
@@ -102,5 +113,9 @@ GameFlowStatusHiScore
         rts
 
 GameFlowStatusLevelComplete
-        ;not yet implemented
+        LIBMATHS_BCD_ADD_8BIT_AVA levelNumber, 1, levelNumber
+        LIBMATHS_ADD_16BIT_AVVA difficultyLevel, 64, 0, difficultyLevel
+        jsr ResetVariables
+        jsr InitGameScreen
+        jsr InitSprites
         rts  

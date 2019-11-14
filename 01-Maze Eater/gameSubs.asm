@@ -8,20 +8,23 @@ InitVariables
         sta pacmanLastFrame
         sta pacmanGhostCollision
         sta dotsEaten
+        sta dotsEaten + 1
         sta pillActive
         sta pillTimer
         sta fruitActive
         sta pacmanX + 1
-        sta ghostX + 1
+        sta ghostX
         sta fruitX + 1
         sta score
         sta score + 1
         sta score + 2
         sta fruitNumber
+        sta difficultyLevel
+        sta ghostY
 
         lda #1
         sta ghostSprite
-        sta difficultyLevel
+        sta difficultyLevel + 1
         sta levelNumber
 
         lda #2
@@ -42,9 +45,9 @@ InitVariables
 
 
         lda #50
-        sta ghostX
+        sta ghostX + 1
         lda #80
-        sta ghostY
+        sta ghostY + 1
         lda #128
         sta fruitX
         lda #138
@@ -81,9 +84,9 @@ InitSprites
         LIBSPRITE_SETFRAME_AA ghostSprite, ghostAnimFrame
         LIBSPRITE_MULTICOLORENABLE_AV ghostSprite, true
         LIBSPRITE_ENABLE_VV %00000011, true
-        LIBSPRITE_SETPOSITION_AAAA pacmanSprite, pacmanX + 1, pacmanX, pacmanY
-        LIBSPRITE_SETPOSITION_AAAA ghostSprite, ghostX + 1, ghostX, ghostY
-        LIBSPRITE_SETPOSITION_AAAA fruitSprite, fruitX + 1, fruitX, fruitY
+        LIBSPRITE_SETPOSITION_AAA pacmanSprite, pacmanX, pacmanY
+        LIBSPRITE_SETPOSITION_AAA ghostSprite, ghostX + 1, ghostY + 1
+        LIBSPRITE_SETPOSITION_AAA fruitSprite, fruitX, fruitY
         LIBSPRITE_SETCOLOUR_VV 0, yellow
         LIBSPRITE_SETCOLOUR_VV 1, red
         LIBSPRITE_SETMULTICOLORS_VV white, black
@@ -174,7 +177,7 @@ UserInput
 
 UpdateSprites
         LIBSPRITE_SETPOSITION_AAA pacmanSprite, pacmanX, pacmanY
-        LIBSPRITE_SETPOSITION_AAA ghostSprite, ghostX, ghostY
+        LIBSPRITE_SETPOSITION_AAA ghostSprite, ghostX + 1, ghostY + 1
         LIBSPRITE_SETFRAME_AA pacmanSprite, pacmanAnimFrame
         LIBSPRITE_SETFRAME_AA ghostSprite, ghostAnimFrame
         rts
@@ -212,29 +215,29 @@ CalculatePacmanScreenAddress
         rts
 
 MoveGhost
-        lda ghostX
+        lda ghostX + 1
         cmp pacmanX
         beq @updown
         bcc @moveright
-        LIBMATHS_SUBTRACT_8BIT_AVA ghostX, #1, ghostX
+        LIBMATHS_SUBTRACT_16BIT_AAA ghostX, difficultyLevel, ghostX
         lda #6
         sta ghostAnimFrame
         jmp @updown
 @moveright
-        LIBMATHS_ADD_8BIT_AVA ghostX, #1, ghostX
+        LIBMATHS_ADD_16BIT_AAA ghostX, difficultyLevel, ghostX
         lda #4
         sta ghostAnimFrame
 @updown
-        lda ghostY
+        lda ghostY + 1
         cmp pacmanY
         beq @exit
         bcc @movedown
-        LIBMATHS_SUBTRACT_8BIT_AVA ghostY, #1, ghostY
+        LIBMATHS_SUBTRACT_16BIT_AAA ghostY, difficultyLevel, ghostY
         lda #3
         sta ghostAnimFrame
         rts
 @movedown
-        LIBMATHS_ADD_8BIT_AVA ghostY, #1, ghostY
+        LIBMATHS_ADD_16BIT_AAA ghostY, difficultyLevel, ghostY
         lda #5
         sta ghostAnimFrame
 @exit
@@ -248,6 +251,9 @@ PacmanEating
         bne @checkpill
         LIBMATHS_BCD_ADD_24BIT_AVA score, 1, score
         inc dotsEaten
+        bne @skip
+        inc dotsEaten + 1
+@skip
         lda #$20
         sta (zpLow),y
 @checkpill
@@ -255,12 +261,26 @@ PacmanEating
         bne @exit
         LIBMATHS_BCD_ADD_24BIT_AVA score, 1, score
         inc dotsEaten
+        bne @skip1
+        inc dotsEaten + 1
+@skip1
         lda #$20
         sta (zpLow),y
         lda #true
         sta pillActive
         lda #180
         sta pillTimer
+@exit
+        rts
+
+CheckEndOfLevel
+        lda dotseaten
+        cmp #20
+        bne @exit
+        lda dotseaten + 1
+        beq @exit
+        lda #gfLevelComplete
+        sta gameStatus
 @exit
         rts
 
@@ -304,6 +324,19 @@ DisplayStats
         clc
         adc #$30
         sta $06C8
+        ;level
+        lda levelNumber
+        pha
+        and #$0F
+        ora #$30
+        sta $06CC
+        pla
+        lsr
+        lsr
+        lsr
+        lsr
+        ora #$30
+        sta $06CB
         rts
 
 PacmanCollision
@@ -354,19 +387,50 @@ DisplayFruit
 exitdisplayfruit
         rts
 
+ResetVariables
+        lda #gfAlive
+        sta gameStatus
+        lda #0
+        sta pacmanAnimFrame
+        sta pacmanLastFrame
+        sta pacmanGhostCollision
+        sta dotsEaten
+        sta dotsEaten + 1
+        sta pillActive
+        sta pillTimer
+        sta fruitActive
+        sta pacmanX + 1
+        sta fruitX + 1
+        sta fruitNumber
+        lda #2
+        sta ghostColour
+        lda #3
+        sta ghostAnimFrame
+        lda #7
+        sta fruitFrame
+        lda #133
+        sta pacmanX
+        lda #231
+        sta pacmanY
+        lda #50
+        sta ghostX + 1
+        lda #80
+        sta ghostY + 1
+
+        rts
 
 ;debug space
 dbvarprint
         lda #19
         jsr krnCHROUT
-        ldx pillTimer
+        ldx dotsEaten
         lda #0
         jsr $BDCD
 
         lda #44
         jsr krnCHROUT
 
-        ldx #0
+        ldx dotsEaten + 1
         lda #0
         jsr $BDCD
 
