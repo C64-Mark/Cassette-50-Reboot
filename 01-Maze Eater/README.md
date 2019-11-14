@@ -4,6 +4,13 @@ Game #01: Maze Eater
 
 Changelog
 
+14.11.2019
+
+- level increment added  
+- difficulty level increment added, increases ghost speed by 1px every 4 levels  
+- level update shown  
+- game over screen (simple) added, and game flow incorporated  
+
 08.11.2019
 
 - ghost flashes when pill eaten  
