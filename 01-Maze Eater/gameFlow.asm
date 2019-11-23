@@ -93,6 +93,11 @@ GameFlowStatusPillEaten
         sta ghostY + 1
         LIBSPRITE_SETPOSITION_AAA ghostSprite, ghostX + 1, ghostY + 1
         LIBMATHS_BCD_ADD_24BIT_AVA score, 10, score
+        LIBSPRITE_SETCOLOUR_AV ghostSprite, red
+        lda #0
+        sta pillActive
+        lda #gfAlive
+        sta gameStatus
         lda SPRCSP
         rts
 @changecolour
@@ -118,4 +123,5 @@ GameFlowStatusLevelComplete
         jsr ResetVariables
         jsr InitGameScreen
         jsr InitSprites
+        jsr CalculatePacmanScreenAddress
         rts  

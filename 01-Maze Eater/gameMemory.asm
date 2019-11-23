@@ -3,14 +3,9 @@
 ;-------------------------------------------------------------------------------
 
 ; $00-$01       Reserved for IO
-floodZoneLow    = $02
-floodZoneHigh   = $03
-floodZoneColourL = $04
-floodZoneColourH = $05
 
 ; $03-$8F       Reserved for BASIC                
-LASTKEY         = $C5 ;current key pressed
-CURRKEY         = $C6 ;no. of chars in keyboard buffer
+
 ; $90-$FA       Reserved for Kernal
 
 zpLow           = $FB
@@ -28,19 +23,29 @@ zpHigh2         = $FE
 ; RAM $0200-$9FFF
 ;-------------------------------------------------------------------------------
 
-MODE            = $0291 ;Disable/Enable shift keys
-
 SCREENRAM       = $0400 ;Default screen ram
 SPRPTR0         = $07F8 ;Sprite pointers
 
-;sprite data
-SPRITERAM       = 170
-*=$2A80
-                incbin "spritesMazeEater.spt", 1, 12, true
+;screen data
+SCN_INTRO       = $2000
+COL_INTRO       = $23E8
+SCN_GAME        = $27D0
+COL_GAME        = $2BB8
+
+*=$2000
+                incbin "scnIntroMazeEater.bin"
+
+
 
 ;character set
+CHARRAM         = 12
 *=$3000
                 incbin "charsMazeEater.cst", 0, 127
+
+;sprite data
+SPRITERAM       = 208
+*=$3400
+                incbin "spritesMazeEater.spt", 1, 12, true
 
 ;-------------------------------------------------------------------------------
 ; BASIC ROM $A000-$BFFF

@@ -8,6 +8,32 @@
   <Multicolour>False</Multicolour>
   <Uppercase>True</Uppercase>
   <character>
+    <charcode>60</charcode>
+    <chardata>
+      <data>8</data>
+      <data>24</data>
+      <data>62</data>
+      <data>126</data>
+      <data>62</data>
+      <data>24</data>
+      <data>8</data>
+      <data>0</data>
+    </chardata>
+  </character>
+  <character>
+    <charcode>62</charcode>
+    <chardata>
+      <data>16</data>
+      <data>24</data>
+      <data>124</data>
+      <data>126</data>
+      <data>124</data>
+      <data>24</data>
+      <data>16</data>
+      <data>0</data>
+    </chardata>
+  </character>
+  <character>
     <charcode>64</charcode>
     <chardata>
       <data>48</data>
@@ -109,6 +135,58 @@
       <data>254</data>
       <data>254</data>
       <data>0</data>
+    </chardata>
+  </character>
+  <character>
+    <charcode>72</charcode>
+    <chardata>
+      <data>60</data>
+      <data>118</data>
+      <data>255</data>
+      <data>255</data>
+      <data>248</data>
+      <data>255</data>
+      <data>126</data>
+      <data>60</data>
+    </chardata>
+  </character>
+  <character>
+    <charcode>73</charcode>
+    <chardata>
+      <data>60</data>
+      <data>126</data>
+      <data>255</data>
+      <data>255</data>
+      <data>253</data>
+      <data>239</data>
+      <data>110</data>
+      <data>44</data>
+    </chardata>
+  </character>
+  <character>
+    <charcode>74</charcode>
+    <chardata>
+      <data>60</data>
+      <data>110</data>
+      <data>255</data>
+      <data>255</data>
+      <data>31</data>
+      <data>255</data>
+      <data>126</data>
+      <data>60</data>
+    </chardata>
+  </character>
+  <character>
+    <charcode>75</charcode>
+    <chardata>
+      <data>52</data>
+      <data>118</data>
+      <data>247</data>
+      <data>191</data>
+      <data>255</data>
+      <data>255</data>
+      <data>126</data>
+      <data>60</data>
     </chardata>
   </character>
 </charset>

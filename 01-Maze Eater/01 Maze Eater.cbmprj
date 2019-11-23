@@ -37,28 +37,17 @@
         <PostBuildCommands />
     </BuildEvents>
     <BuildList>
-        <FileName>_includes.asm</FileName>
-        <FileName>gameMemory.asm</FileName>
         <FileName>gameMain.asm</FileName>
         <FileName>gameSubs.asm</FileName>
         <FileName>gameVars.asm</FileName>
         <FileName>gameFlow.asm</FileName>
+        <FileName>gameMemory.asm</FileName>
+        <FileName>gameLibs.asm</FileName>
     </BuildList>
     <DetermineBuildOrder>1</DetermineBuildOrder>
     <PaddingByte>0</PaddingByte>
-    <AssyBinaryFileLocation />
+    <AssyBinaryFileLocation>C:\Users\marka\Games\C64\cbmprg\Cassette50Reboot\01 Maze Eater\scnIntroMazeEater.bin</AssyBinaryFileLocation>
     <SourceFiles>
-        <SourceFile>
-            <Name>_includes.asm</Name>
-            <PrgName />
-            <FileType>2</FileType>
-            <IncludeInBuild>True</IncludeInBuild>
-            <Regions />
-            <Breakpoints />
-            <Bookmarks />
-            <Topmost>False</Topmost>
-            <FileOpen>True</FileOpen>
-        </SourceFile>
         <SourceFile>
             <Name>01 Maze Eater.bas</Name>
             <PrgName />
@@ -83,6 +72,17 @@
         </SourceFile>
         <SourceFile>
             <Name>gameFlow.asm</Name>
+            <PrgName />
+            <FileType>2</FileType>
+            <IncludeInBuild>True</IncludeInBuild>
+            <Regions />
+            <Breakpoints />
+            <Bookmarks />
+            <Topmost>True</Topmost>
+            <FileOpen>True</FileOpen>
+        </SourceFile>
+        <SourceFile>
+            <Name>gameLibs.asm</Name>
             <PrgName />
             <FileType>2</FileType>
             <IncludeInBuild>True</IncludeInBuild>
@@ -135,6 +135,17 @@
             <Bookmarks />
             <Topmost>False</Topmost>
             <FileOpen>True</FileOpen>
+        </SourceFile>
+        <SourceFile>
+            <Name>screensMazeEater.sdd</Name>
+            <PrgName />
+            <FileType>9</FileType>
+            <IncludeInBuild>True</IncludeInBuild>
+            <Regions />
+            <Breakpoints />
+            <Bookmarks />
+            <Topmost>False</Topmost>
+            <FileOpen>False</FileOpen>
         </SourceFile>
         <SourceFile>
             <Name>spritesMazeEater.spt</Name>

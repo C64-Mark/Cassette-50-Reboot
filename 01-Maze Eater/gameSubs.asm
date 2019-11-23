@@ -56,27 +56,51 @@ InitVariables
         rts
 
 InitGame
-        LIBSCREEN_SET1000_AV SCREENRAM, space
-        LIBSCREEN_SETVIC_AVV VMCR, 240, 12
-        LIBSCREEN_SETCOLOURS_VVVVV black, black, black, black, black
+        LIBSCREEN_SETVIC_AVV VMCR, 240, CHARRAM
+        LIBSCREEN_SETCOLOURS_VV black, black
         LIBGENERAL_INITRAND
         rts
 
 IntroScreen
-        LIBSCREEN_PRINT_A txtTitle
-@response
+        LIBSCREEN_COPYSCREEN_AA SCN_INTRO, COL_INTRO
+introresponse
+        LIBJOY_GETJOY_V JoyLeft
+        bne @Right
+        dec levelNumber
+        bne updatelevel
+        lda #9
+        sta levelNumber
+        jmp updatelevel
+@right
+        LIBJOY_GETJOY_V JoyRight
+        bne @fire
+        inc levelNumber
+        lda levelNumber
+        cmp #10
+        bne updatelevel
+        lda #1
+        sta levelNumber
+        jmp updatelevel
+@fire
         LIBJOY_GETJOY_V JoyFire
-        bne @response
+        bne introresponse
+        ldx levelNumber
+difflevel
+        dex
+        beq exitintro
+        LIBMATHS_ADD_16BIT_AVVA difficultyLevel, 64, 0, difficultyLevel
+        jmp difflevel
+exitintro
         rts
+updatelevel
+        lda levelNumber
+        ora #$30
+        sta $06C0
+        LIBGENERAL_DELAY_V 150
+        jmp introresponse
 
 InitGameScreen
-        LIBSCREEN_SET1000_AV SCREENRAM, space
-        LIBSCREEN_PRINT_A scnMazeA
-        LIBSCREEN_PRINT_A scnMazeB
-        LIBSCREEN_PRINT_A scnMazeC
-        LIBSCREEN_PRINT_A scnMazeD
-        LIBSCREEN_PRINT_A scnMazeE
-        LIBSCREEN_PRINT_A scnStats
+        LIBSCREEN_COPYSCREEN_AA SCN_GAME, COL_GAME
         rts
 
 InitSprites
@@ -329,14 +353,14 @@ DisplayStats
         pha
         and #$0F
         ora #$30
-        sta $06CC
+        sta $06CD
         pla
         lsr
         lsr
         lsr
         lsr
         ora #$30
-        sta $06CB
+        sta $06CC
         rts
 
 PacmanCollision
