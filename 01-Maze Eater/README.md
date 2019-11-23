@@ -4,6 +4,16 @@ Game #01: Maze Eater
 
 Changelog
 
+23.11.2019
+
+- incorporate library files into single file and moved constants to vars file  
+- intro screen and game screen are now binaries loaded into memory  
+- new intro screen designed (basics)  
+- level select added  
+- ghost now returns to normal status after being eaten  
+- new chars added  
+- general code tweaks  
+
 14.11.2019
 
 - level increment added  
