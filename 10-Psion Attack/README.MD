@@ -7,3 +7,7 @@ Character set created
 Char animations built within character set  
 Ship sprite created  
 Space objects smooth scroll/animation implemented
+
+13.03.2020  
+
+Added simple ground scroll. Needs smooth scroll implementing
