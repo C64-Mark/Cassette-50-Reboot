@@ -9,6 +9,7 @@ Initialise
         jsr InitialiseScreen
         jsr InitialiseGameScreen
         jsr InitialiseInterrupt
+        jsr gameGround_DrawGround
 ForeverLoop
         jmp ForeverLoop
 
@@ -16,6 +17,7 @@ GameLoop
         jsr gameObject_SelectObject
         jsr gameObject_Update
         jsr gameObject_Draw
+        jsr gameGround_AnimateGround
 
         asl $D019
         jmp $EA31

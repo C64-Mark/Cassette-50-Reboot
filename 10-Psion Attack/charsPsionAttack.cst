@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <charset>
   <FileVersion>2</FileVersion>
-  <BK1>07</BK1>
+  <BK1>57</BK1>
   <BK2>77</BK2>
   <Col3>37</Col3>
   <Reversed>True</Reversed>
@@ -980,6 +980,58 @@
       <data>31</data>
       <data>15</data>
       <data>0</data>
+    </chardata>
+  </character>
+  <character>
+    <charcode>139</charcode>
+    <chardata>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>255</data>
+    </chardata>
+  </character>
+  <character>
+    <charcode>140</charcode>
+    <chardata>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>3</data>
+      <data>15</data>
+      <data>63</data>
+      <data>255</data>
+      <data>255</data>
+    </chardata>
+  </character>
+  <character>
+    <charcode>141</charcode>
+    <chardata>
+      <data>0</data>
+      <data>0</data>
+      <data>60</data>
+      <data>255</data>
+      <data>255</data>
+      <data>255</data>
+      <data>255</data>
+      <data>255</data>
+    </chardata>
+  </character>
+  <character>
+    <charcode>142</charcode>
+    <chardata>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>192</data>
+      <data>240</data>
+      <data>252</data>
+      <data>255</data>
+      <data>255</data>
     </chardata>
   </character>
 </charset>
