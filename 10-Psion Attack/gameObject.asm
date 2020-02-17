@@ -1,111 +1,3 @@
-;-------------------------------------------------------------------------------
-; gameObject Variable
-;-------------------------------------------------------------------------------
-
-objectCurrentFrame      byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-
-objectColour            byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        
-objectPositionX         byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-
-objectPositionY         byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-
-objectSpeed             byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-
-objectSpeedCounter      byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-
-objectActive            byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-
-objectScreenPosLo       byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-
-objectScreenPosHi       byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-
-objectTypeOffset        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-                        byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-
-currentObject           byte 00
-currentObjectColour     byte 00
-
-objectRightFrame        byte 73, 74, 75, 76, 77, 78, 79, 32 ;cruiser
-                        byte 88, 89, 90, 91, 92, 93, 94, 32 ;fuel pod
-                        byte 100, 101, 102, 103, 104, 105, 106, 32 ;fighter
-                        byte 114, 115, 116, 117, 118, 119, 120, 32 ;battlestar
-                        byte 127, 128, 129, 130, 131, 132, 133, 32 ;mine
-
-objectLeftFrame         byte 80, 81, 82, 83, 84, 85, 86, 72 ;cruiser
-                        byte 32, 32, 32, 95, 96, 97, 98, 87 ;fuel pod
-                        byte 32, 107, 108, 109, 110, 111, 112, 99 ;fighter
-                        byte 32, 32, 121, 122, 123, 124, 125, 113 ;battlestar
-                        byte 32, 32, 134, 135, 136, 137, 138, 126 ;mine
-
-objectEntryRow          byte 00
-objectEntryDelay        byte 02
-
-objectPreviousRow       byte 00, 00, 00, 00, 00
-
-numberObjects           byte 00
-objectType              byte 00
-
-;constants
-OBJ_MAX                 = 30
-OBJ_ENTRYDELAY          = 05
-OBJ_CRUISER             = 00
-OBJ_CRUISER_COLOUR      = purple
-OBJ_FUELPOD             = 08
-OBJ_FUELPOD_COLOUR      = white
-OBJ_FIGHTER             = 16
-OBJ_FIGHTER_COLOUR      = blue
-OBJ_BATTLESTAR          = 24
-OBJ_BATTLESTAR_COLOUR   = green
-OBJ_MINE                = 32
-OBJ_MINE_COLOUR         = red
-
-
-;-------------------------------------------------------------------------------
-; gameObject Subroutines
-;-------------------------------------------------------------------------------
-
-; >>> gameObject_Update <<<
-; Update the current game object
 gameObject_Update
         ldx #$FF
 nextobject
@@ -131,6 +23,7 @@ animateobject
         sta objectCurrentFrame,x
         dec objectPositionX,x
         lda objectPositionX,x
+        cmp #$FF
         beq removeobject
 displayobject
         jsr gameObject_SetScreenPos
@@ -138,13 +31,14 @@ displayobject
 removeobject
         lda #0
         sta objectActive,x
+        inc objectPositionX,x
         jsr gameObject_SetScreenPos
         lda objectScreenPosLo,x
         sta scnPtrLo
         lda objectScreenPosHi,x
         sta scnPtrHi
         lda #space
-        ldy #1
+        ldy #0
         sta (scnPtrLo),y
         jmp nextobject
 
@@ -216,10 +110,18 @@ gameObject_SelectObject
 readytoselect
         lda #OBJ_ENTRYDELAY
         sta objectEntryDelay
-@tryagain
+        ldx #0
+@loop
+        lda objectActive,x
+        beq @randomise
+        inx
+        cpx #40
+        bne @loop
+        rts
+@randomise
+        stx currentObjectID
         lda SIDRAND
         cmp #32
-        ;bcs gameObject_SelectObject
         bcc @selected
         rts
 @selected
@@ -241,7 +143,6 @@ readytoselect
         bne @skip2
         inc objectEntryRow
         jmp @tryanotherrow
-        ;beq @tryagain
 @skip2
         inx
         cpx #5
@@ -294,14 +195,15 @@ check_mine
 setobject
         sta currentObject
         sty currentObjectColour
-        ldx #0
-@loop
-        lda objectActive,x
-        beq objectselected
-        inx
-        cpx #40
-        bne @loop
-        rts
+;        ldx #0
+;@loop
+;        lda objectActive,x
+;        beq objectselected
+;        inx
+;        cpx #40
+;        bne @loop
+;        rts
+        ldx currentObjectID
 objectselected
         lda currentObject
         sta objectTypeOffset,x
