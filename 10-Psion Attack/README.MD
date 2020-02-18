@@ -19,3 +19,10 @@ Ship control with joystick implemented
 Object select code optimised (game speed increased)  
 Explosion sprite created
 Game memory reorganised  
+
+18.02.2020  
+
+Bullets added, with movement  
+Player movement rate adjusted  
+Further code tidy and tweaks  
+
