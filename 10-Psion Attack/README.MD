@@ -17,12 +17,12 @@ Added simple ground scroll.
 Game flow implemented  
 Ship control with joystick implemented  
 Object select code optimised (game speed increased)  
-Explosion sprite created
+Explosion sprite created and collision implemented  
 Game memory reorganised  
 
 18.02.2020  
 
-Bullets added, with movement  
+Bullets added, with movement and simple collision detection  
 Player movement rate adjusted  
 Further code tidy and tweaks  
 
