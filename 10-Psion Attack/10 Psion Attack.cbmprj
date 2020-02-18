@@ -46,6 +46,7 @@
         <FileName>gameGround.asm</FileName>
         <FileName>gamePlayer.asm</FileName>
         <FileName>gameFlow.asm</FileName>
+        <FileName>gameBullet.asm</FileName>
         <FileName>Initialise.asm</FileName>
         <FileName>Menu.asm</FileName>
     </BuildList>
@@ -77,6 +78,17 @@
         </SourceFile>
         <SourceFile>
             <Name>Constants.asm</Name>
+            <PrgName />
+            <FileType>2</FileType>
+            <IncludeInBuild>True</IncludeInBuild>
+            <Regions />
+            <Breakpoints />
+            <Bookmarks />
+            <Topmost>False</Topmost>
+            <FileOpen>True</FileOpen>
+        </SourceFile>
+        <SourceFile>
+            <Name>gameBullet.asm</Name>
             <PrgName />
             <FileType>2</FileType>
             <IncludeInBuild>True</IncludeInBuild>

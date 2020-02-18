@@ -195,16 +195,7 @@ check_mine
 setobject
         sta currentObject
         sty currentObjectColour
-;        ldx #0
-;@loop
-;        lda objectActive,x
-;        beq objectselected
-;        inx
-;        cpx #40
-;        bne @loop
-;        rts
         ldx currentObjectID
-objectselected
         lda currentObject
         sta objectTypeOffset,x
         lda currentObjectColour
@@ -220,6 +211,8 @@ objectselected
         sta objectCurrentFrame,x
         lda SIDRAND
         and #3
+        clc
+        adc #3
         sta objectSpeed,x
         sta objectSpeedCounter,x
         rts

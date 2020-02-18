@@ -20,28 +20,29 @@ SPRPTR0         = $07F8 ;Sprite pointers
 gameStatus              byte 00
 
 groundCounter           byte 00
-groundRate              byte 05
+groundRate              byte 10
 
-playerX                 byte 25
-playerY                 byte 139
+playerX                 byte 00, 25
+playerY                 byte 00, 139
+playerDelta             byte 64, 00
 playerHit               byte 00
 playerLives             byte 03
 
-bullet1Active           byte 00
-bullet2Active           byte 00
-bullet3Active           byte 00
+playerExploding         byte 00
+playerExplosionFrame    byte 02
+playerExplosionRate     byte 10
+playerExplosionCounter  byte 10
 
-bullet1X                byte 00
-bullet1XMSB             byte 00
-bullet1Y                byte 00
-
-bullet2X                byte 00
-bullet2XMSB             byte 00
-bullet2Y                byte 00
-
-bullet3X                byte 00
-bullet3XMSB             byte 00
-bullet3Y                byte 00
+bulletSprite            byte 02, 03, 04
+bulletSpriteMask        byte 04, 08, 16
+bulletFrame             byte 08
+bulletFired             byte 00
+bulletActive            byte 00, 00, 00
+bulletX                 byte 00, 00, 00
+bulletXMSB              byte 00, 00, 00
+bulletY                 byte 00, 00, 00
+bulletRate              byte 80
+bulletDelay             byte 100
 
 currentObject           byte 00
 currentObjectColour     byte 00
@@ -55,10 +56,18 @@ objectPreviousRow       byte 00, 00, 00, 00, 00
 numberObjects           byte 00
 objectType              byte 00
 
+shipOverlaySprite       byte 00
+overlayFrame            byte 00
+shipSprite              byte 01
+shipFrame               byte 01
+
+spriteNumberMask        byte %00000001, %00000010, %00000100, %00001000
+                        byte %00010000, %00100000, %01000000, %10000000
+
 ;-------------------------------------------------------------------------------
 ; Game Tables
 ;-------------------------------------------------------------------------------
-*=$0850
+*=$0900
 objectCurrentFrame      byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
                         byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
                         byte 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
@@ -131,6 +140,11 @@ objectLeftFrame         byte 80, 81, 82, 83, 84, 85, 86, 72 ;cruiser
                         byte 32, 32, 121, 122, 123, 124, 125, 113 ;battlestar
                         byte 32, 32, 134, 135, 136, 137, 138, 126 ;mine
 
+landscape               byte 139, 139, 140, 141, 142, 139, 140, 142, 139, 140
+                        byte 141, 141, 142, 139, 139, 139, 140, 142, 139, 139
+                        byte 139, 140, 141, 141, 141, 141, 142, 139, 140, 142
+                        byte 139, 139, 140, 142, 139, 139, 140, 141, 142, 139
+
 ;screen data
 SCN_INTRO       = $2000
 COL_INTRO       = $23E8
@@ -146,4 +160,4 @@ CHARRAM         = 12
 ;sprite data
 SPRITERAM       = 224
 *=$3800
-                incbin "spritesPsionAttack.spt", 1, 8, true
+                incbin "spritesPsionAttack.spt", 1, 9, true

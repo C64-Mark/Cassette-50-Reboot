@@ -21,6 +21,8 @@ OBJ_BATTLESTAR          = 24
 OBJ_BATTLESTAR_COLOUR   = green
 OBJ_MINE                = 32
 OBJ_MINE_COLOUR         = red
+OBJ_EXPLODE             = 40
+OBJ_EXPLODE_COLOUR      = gray2
 
 black                   = #$00
 white                   = #$01

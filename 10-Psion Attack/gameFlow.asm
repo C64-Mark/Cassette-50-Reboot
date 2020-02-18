@@ -35,6 +35,7 @@ GameFlow_StatusActive
         jsr gameObject_Draw
         jsr gamePlayer_Move
         jsr gamePlayer_CheckCollision
+        jsr gameBullet_Move
         lda playerHit
         beq @exit
         lda #GF_STATUS_DYING
@@ -47,11 +48,11 @@ GameFlow_StatusHyperJump
         rts
 
 GameFlow_StatusDying
-        jmp GameFlow_StatusDying ;inf loop
+        jsr gamePlayer_Exploding
         rts
 
 GameFlow_StatusDead
-        ;not yet implemented
+        jmp GameFlow_StatusDead
         rts
 
 GameFlow_StatusHiScore

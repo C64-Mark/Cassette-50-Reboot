@@ -120,6 +120,22 @@ defm    LIBSPRITE_ENABLE_VV ;Sprite Number, True/False
 @done
         endm
 
+; Enable sprites - already selected
+defm    LIBSPRITE_ENABLE_V ;True/False
+        ;lda #/1
+        ldy #/2
+        beq @disable
+@enable
+        ora SPREN
+        sta SPREN
+        jmp @done 
+@disable
+        eor #$FF
+        and SPREN
+        sta SPREN
+@done
+        endm
+
 ; Switch on sprite multicolour mode
 defm    LIBSPRITE_MULTICOLORENABLE_AV ;Sprite Number, True/False
         ldy /1
@@ -183,6 +199,16 @@ defm    LIBSPRITE_SETFRAME_AA ;Sprite Number, Anim Index
 ; Set position of sprite on the screen
 defm    LIBSPRITE_SETPOSITION_AAA ;Sprite Number, X Source, Y Source
         lda /1
+        asl
+        tay
+        lda /2
+        sta SPRX0,y
+        lda /3
+        sta SPRY0,y
+        endm
+
+; Set position of sprite on the screen - selected
+defm    LIBSPRITE_SETPOSITION_AA ;X Source, Y Source
         asl
         tay
         lda /2

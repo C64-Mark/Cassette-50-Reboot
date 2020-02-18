@@ -280,6 +280,41 @@
       <data>0</data>
     </sdata>
    </sprite>
+  <sprite>
+    <description>Bullet</description>
+    <links></links>
+    <include>True</include>
+    <multi>True</multi>
+    <spbkgnd>0</spbkgnd>
+    <spcolour>12</spcolour>
+    <mcolour1>2</mcolour1>
+    <mcolour2>15</mcolour2>
+    <expandx>False</expandx>
+    <expandy>False</expandy>
+    <sdata>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>34</data>
+      <data>51</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+    </sdata>
+   </sprite>
     <!-- Scratchpad data -->
     <ScratchpadData>
         <MaxSprites>2</MaxSprites>
