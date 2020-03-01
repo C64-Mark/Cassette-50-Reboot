@@ -26,3 +26,15 @@ Bullets added, with movement and simple collision detection
 Player movement rate adjusted  
 Further code tidy and tweaks  
 
+01.03.2020  
+
+Hyperspace added
+Level change added
+Score and hi-score fully implemented
+Starscape added using free sprites
+Code tidy and re-arrange
+Collision detection tweaked
+New char set added  
+
+Game now complete except sfx and music
+
