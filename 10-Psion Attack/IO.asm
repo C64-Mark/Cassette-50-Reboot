@@ -61,7 +61,6 @@ SUREL3          = $D414 ;V3 sustain/release
 SIDVOL          = $D418 ;Volume
 SIDRAND         = $D41B ;Oscillator 3 random number generator
       
-COLOURRAM       = $D800 ;start of default colour RAM
 CIAPRA          = $DC00 ;CIA port A
 CIAPRB          = $DC01 ;CIA port B
 DDRA            = $DC02 ;Data direction register port A
@@ -72,3 +71,4 @@ DDRB            = $DC03 ;Data direction register port B
 ;-------------------------------------------------------------------------------
 
 krnCHROUT       = $FFD2
+krnPLOT         = $FFF0

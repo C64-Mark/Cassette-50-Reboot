@@ -22,7 +22,7 @@
 300 k=peek(197):ifk=10thenm=m-40:pokem+40,32
 310 ifk=12thenm=m+40:pokem-40,32
 315 ifk=36thent=9:pokev1+4,0:pokev1+4,17:goto92
-320 ifk=60then3000
+320 ifk=60then3000: rem hyperspace (space bar pressed)
 335 ifm<1069thenm=1069
 340 ifm>1909thenm=1909
 345 pokem-1,32:pokeco+m,1:pokem,0:cc=1103+(int(rnd(1)*17)*40):tt=int(rnd(1)*6):hh=int(rnd(1)*8)+1:iftt=2thenpokecc,2:pokeco+cc,1

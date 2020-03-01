@@ -1,101 +1,172 @@
 gamePlayer_Move
-        LIBJOY_GETJOY_V JoyUp
-        bne @checkdown
+        lda inputJoyUp
+        beq .MoveDown
+        lda #0
+        sta inputJoyUp
         lda playerY+1
         cmp #60
-        bcc @checkdown
-        LIBMATHS_SUBTRACT_16BIT_AAA playerY, playerDelta, playerY
-        jmp @exit
-@checkdown
-        LIBJOY_GETJOY_V JoyDown
-        bne @checkleft
-        LIBMATHS_ADD_16BIT_AAA playerY, playerDelta, playerY
-        jmp @exit
-@checkleft
-        LIBJOY_GETJOY_V JoyLeft
-        bne @checkright
+        bcc .MoveDown
+        LIBMATHS_SUBTRACT_16BIT_AV playerY, PLAYER_DELTA
+.MoveDown
+        lda inputJoyDown
+        beq .MoveLeft
+        lda #0
+        sta inputJoyDown
+        LIBMATHS_ADD_16BIT_AV playerY, PLAYER_DELTA
+.MoveLeft
+        lda inputJoyLeft
+        beq .MoveRight
+        lda #0
+        sta inputJoyLeft
         lda playerX+1
         cmp #25
-        bcc @checkright
-        LIBMATHS_SUBTRACT_16BIT_AAA playerX, playerDelta, playerX
-        jmp @exit
-@checkright
-        LIBJOY_GETJOY_V JoyRight
-        bne @checkfire
+        bcc .MoveRight
+        LIBMATHS_SUBTRACT_16BIT_AV playerX, PLAYER_DELTA
+.MoveRight
+        lda inputJoyRight
+        beq .MoveFire
+        lda #0
+        sta inputJoyRight
         lda playerX+1
         cmp #120
-        bcs @checkfire
-        LIBMATHS_ADD_16BIT_AAA playerX, playerDelta, playerX
-        jmp @exit
-@checkfire
-        LIBJOY_GETJOY_V JoyFire
-        bne @exit
+        bcs .MoveFire
+        LIBMATHS_ADD_16BIT_AV playerX, PLAYER_DELTA
+.MoveFire
+        lda inputJoyFire
+        beq .MoveExit
+        lda #0
+        sta inputJoyFire
         jsr gameBullet_Fired
-@exit
+.MoveExit
         lda bulletDelay
-        cmp #0
-        beq @updatesprites
+        beq .UpdatePlayerSprites
         dec bulletDelay
-@updatesprites
-        LIBSPRITE_SETPOSITION_AAA shipOverlaySprite, playerX+1, PlayerY+1
-        LIBSPRITE_SETPOSITION_AAA shipSprite, playerX+1, playerY+1
+.UpdatePlayerSprites
+        LIBSPRITE_SETPOSITION_VAA SHIP_OVERLAY_SPRITE, playerX+1, PlayerY+1
+        LIBSPRITE_SETPOSITION_VAA SHIP_SPRITE, playerX+1, playerY+1
         rts
 
-gamePlayer_CheckCollision
-        lda SPRCBG
-        lsr
-        bcc @checkbullet1
-        lda true
-        sta playerHit
-        jmp @exit
-@checkbullet1
-        lsr
-        bcc @checkbullet2
-        lda #2
-        sta BDCOL
-        jmp @exit
-@checkbullet2
-        lsr
-        bcc @checkbullet3
-        lda #3
-        sta BDCOL
-        jmp @exit
-@checkbullet3
-        lsr
-        bcc @exit
-        lda #4
-        sta BDCOL
-@exit
-        lda #0
-        sta SPRCBG
-        rts
 
 gamePlayer_Exploding
         lda playerExploding
-        bne explosiondelay
+        bne .ExplosionDelay
         LIBSPRITE_ENABLE_VV %00000001, false
-        LIBSPRITE_SETFRAME_AA shipSprite, playerExplosionFrame
+        LIBSPRITE_SETFRAME_VA SHIP_SPRITE, playerExplosionFrame
         lda #1
         sta playerExploding
-explosiondelay
+.ExplosionDelay
         lda playerExplosionCounter
-        beq nextexplosionframe
+        beq .NextExplosionFrame
         dec playerExplosionCounter
         rts
-nextexplosionframe
-        lda playerExplosionRate
+.NextExplosionFrame
+        lda #EXPLOSION_RATE
         sta playerExplosionCounter
         inc playerExplosionFrame
         lda playerExplosionFrame
         cmp #8
-        bne updateexplosionframe
+        bne .UpdateExplosionFrame
         LIBSPRITE_ENABLE_VV %00000010, false
         lda #GF_STATUS_DEAD
         sta gameStatus
+        dec playerLives
         rts
-updateexplosionframe
-        LIBSPRITE_SETFRAME_AA shipSprite, playerExplosionFrame
+.UpdateExplosionFrame
+        LIBSPRITE_SETFRAME_VA SHIP_SPRITE, playerExplosionFrame
         rts
 
+
+gamePlayer_Hyperjump
+        lda hyperjumpLeft
+        beq .ExitHyperjump
+        ldx hyperjumpStage
+        cpx #4
+        beq .HyperjumpComplete
+        dec hyperjumpCounter
+        lda hyperjumpCounter
+        beq .NextHyperjumpStage
+        rts
+.NextHyperjumpStage
+        lda #HYPERJUMP_RATE
+        sta hyperjumpCounter
+        lda hyperjumpStageColour,x
+        sta BDCOL
+
+        ldy #18
+.HyperjumpTextLoop
+        lda txtHyperjump,y
+        sta SCN_ROW10+11,y
+        lda hyperjumpStageColour,x
+        sta COL_ROW10+11,y
+        dey
+        bpl .HyperjumpTextLoop
+
+        inc hyperjumpStage
+        rts
+.HyperjumpComplete
+        lda #1
+        sta hyperjumpCounter
+        lda #0
+        sta hyperjumpStage
+        sta hyperjumpLeft
+        sta BDCOL
+        jsr Initialise_GameScreen
+        ldx #0
+        txa
+        sta inputKeySpace
+.ResetObjectsLoop
+        sta objectActive,x
+        inx
+        cpx numberObjects
+        bne .ResetObjectsLoop
+.ExitHyperjump
+        lda #GF_STATUS_ACTIVE
+        sta gameStatus
+        rts
+
+
+
+
+;gamePlayer_Hyperjump
+;        lda hyperjumpLeft
+;        beq .ExitHyperjump
+;        lda hyperjumpStage
+;        cmp #lightred
+;        beq .JumpComplete
+;        cmp #black
+;        bne .NextHyperjumpStage
+;        lda #yellow
+;        sta hyperjumpStage
+;        lda hyperjumpRate
+;        sta hyperjumpCounter
+;        jmp .ExitHyperjumpStage
+;.NextHyperjumpStage
+;        dec hyperjumpCounter
+;        lda hyperjumpCounter
+;        bne .ExitHyperjumpStage
+;        inc hyperjumpStage
+;        lda hyperjumpRate
+;        sta hyperjumpCounter
+;        jmp .ExitHyperjumpStage
+;.JumpComplete
+;        lda #black
+;        sta hyperjumpStage
+;        dec hyperjumpLeft
+;        jsr Initialise_GameScreen
+;        ldx #0
+;        txa
+;        sta inputKeySpace
+;.ResetObjectsLoop
+;        sta objectActive,x
+;        inx
+;        cpx numberObjects
+;        bne .ResetObjectsLoop
+;.ExitHyperjump
+;        lda #GF_STATUS_ACTIVE
+;        sta gameStatus
+;.ExitHyperjumpStage
+;        lda hyperjumpStage
+;        sta BDCOL
+;        rts
 
 

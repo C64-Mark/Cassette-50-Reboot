@@ -1,12 +1,3 @@
-;*******************************************************************************
-; GAME LIBRARIES
-;*******************************************************************************
-
-;-------------------------------------------------------------------------------
-; LIBSCREEN LIBRARIES
-;-------------------------------------------------------------------------------
-
-
 ; Copy screen and colour data to display ram
 defm    LIBSCREEN_COPYSCREEN_AA ;address of screen, address of colour
         ldx #0
@@ -32,30 +23,6 @@ defm    LIBSCREEN_COPYSCREEN_AA ;address of screen, address of colour
         bne @loop
         endm
 
-; Use kernal CHROUT to print text to screen
-defm    LIBSCREEN_PRINT_A ;address of source text
-        ldy #0
-@nextchar
-        lda /1,y
-        beq @exit
-        jsr krnCHROUT
-        iny
-        jmp @nextchar
-@exit
-        endm
-
-; Scroll a single row of text right to left
-defm    LIBSCREEN_SCROLLROWLEFT_AV ;screen row start, new char on right of screen
-        ldx #0
-@loop
-        lda /1+1,x
-        sta /1,x
-        inx
-        cpx #40
-        bne @loop
-        lda #/2
-        sta /1+39
-        endm
 
 ; Set 1000 consecutive bytes to a character code
 defm    LIBSCREEN_SET1000_AV ;Start Address, Character Code
@@ -85,13 +52,6 @@ defm    LIBSCREEN_SETVIC_AVV ;VICRegister, Clear, Set
         sta /1
         endm
 
-; Set VIC video modes
-defm    LIBSCREEN_SETVIC_AVA ;VICRegister, Clear, Set
-        lda /1
-        and #/2
-        ora /3
-        sta /1
-        endm
 
 ; Wait for raster line
 defm    LIBSCREEN_WAIT_V ;Line number
@@ -100,9 +60,6 @@ defm    LIBSCREEN_WAIT_V ;Line number
         bne @loop
         endm
 
-;-------------------------------------------------------------------------------
-; LIBSPRITE LIBRARIES
-;-------------------------------------------------------------------------------
 
 ; Enable sprites
 defm    LIBSPRITE_ENABLE_VV ;Sprite Number, True/False
@@ -120,25 +77,10 @@ defm    LIBSPRITE_ENABLE_VV ;Sprite Number, True/False
 @done
         endm
 
-; Enable sprites - already selected
-defm    LIBSPRITE_ENABLE_V ;True/False
-        ;lda #/1
-        ldy #/2
-        beq @disable
-@enable
-        ora SPREN
-        sta SPREN
-        jmp @done 
-@disable
-        eor #$FF
-        and SPREN
-        sta SPREN
-@done
-        endm
 
 ; Switch on sprite multicolour mode
-defm    LIBSPRITE_MULTICOLORENABLE_AV ;Sprite Number, True/False
-        ldy /1
+defm    LIBSPRITE_MULTICOLORENABLE_VV ;Sprite Number, True/False
+        ldy #/1
         lda spriteNumberMask,y      
         ldy #/2
         beq @disable
@@ -161,18 +103,11 @@ defm    LIBSPRITE_SETMULTICOLORS_VV ;Colour0, Colour1
         sta SPRMC1
         endm
 
-; Set sprite colour via address
-defm    LIBSPRITE_SETCOLOUR_AA ;Sprite Number, Address
-        lda /2
-        ldy /1
-        sta SPRCOL0,y
-        endm
 
-; Set sprite colour via address & value
-defm    LIBSPRITE_SETCOLOUR_AV ;Sprite Number, Value
+; Set sprite colour via value & value
+defm    LIBSPRITE_SETCOLOUR_VV ;Sprite Number, Value
         lda #/2
-        ldy /1
-        sta SPRCOL0,y
+        sta SPRCOL0 + /1
         endm
 
 ; Set sprite colour via value & address
@@ -181,52 +116,25 @@ defm    LIBSPRITE_SETCOLOUR_VA ;Sprite Number, Address
         sta SPRCOL0 + /1
         endm
 
-; Set sprite colour via value & value
-defm    LIBSPRITE_SETCOLOUR_VV ;Sprite Number, Value
-        lda #/2
-        sta SPRCOL0 + /1
-        endm
-
 ; Set current animation frame for sprite
-defm    LIBSPRITE_SETFRAME_AA ;Sprite Number, Anim Index
-        ldy /1        
+defm    LIBSPRITE_SETFRAME_VA ;Sprite Number, Anim Index
+        ldy #/1        
         clc
         lda /2
         adc #SPRITERAM
         sta SPRPTR0,y
         endm
 
+
 ; Set position of sprite on the screen
-defm    LIBSPRITE_SETPOSITION_AAA ;Sprite Number, X Source, Y Source
-        lda /1
+defm    LIBSPRITE_SETPOSITION_VAA ;Sprite Number, X Source, Y Source
+        lda #/1
         asl
         tay
         lda /2
         sta SPRX0,y
         lda /3
         sta SPRY0,y
-        endm
-
-; Set position of sprite on the screen - selected
-defm    LIBSPRITE_SETPOSITION_AA ;X Source, Y Source
-        asl
-        tay
-        lda /2
-        sta SPRX0,y
-        lda /3
-        sta SPRY0,y
-        endm
-
-;-------------------------------------------------------------------------------
-; LIBGENERAL LIBRARIES
-;-------------------------------------------------------------------------------
-
-; Copy a 16-bit value
-defm    LIBGENERAL_COPY_WORD_AA ;Source, Target
-        lda /1
-        sta /2
-        lda /1 + 1
-        sta /2 + 1
         endm
 
 ; Use SID to generate a random number seed
@@ -256,127 +164,27 @@ defm    LIBJOY_GETJOY_V ; JoystickDirection
         and #/1
         endm ; test with bne on return
 
-;store an address in a memory location
-defm    LIBGENERAL_STORE_ADDRESS_AA ;address to store, destination
-        lda #</1
-        sta /2
-        lda #>/1
-        sta /2 + 1
-        endm
 
-;store a value in an address
-defm    LIBGENERAL_STORE_VA ;value to store, address to store it in
-        lda #/1
-        sta /2
-        endm
-
-;-------------------------------------------------------------------------------
-; LIBMATHS LIBRARIES
-;-------------------------------------------------------------------------------
-
-; 8-bit addition between address and value
-defm    LIBMATHS_ADD_8BIT_AVA ;Source, Value, Target
+; Add 8-bit value to 16-bit value
+defm    LIBMATHS_ADD_16BIT_AV ;Source, Value
         clc
         lda /1
         adc #/2
-        sta /3
-        endm
-
-; 16-bit addition between two addresses
-defm    LIBMATHS_ADD_16BIT_AAA ;Source1, Source2, Target
-        clc
-        lda /1
-        adc /2
-        sta /3
-        lda /1 + 1
-        adc /2 + 1
-        sta /3 + 1
-        endm
-
-; 16-bit addition to an 8-bit valur   
-defm    LIBMATHS_ADD_16BIT_8BIT_AAA ;Source1, Source2, Target
-        clc
-        lda /1
-        adc /2
-        sta /3
-        lda /1 + 1
-        adc #0
-        sta /3 + 1
-        endm
-
-; 16-bit addition between address and value
-defm    LIBMATHS_ADD_16BIT_AVVA ;Source, Low Byte, High Byte, Target
-        clc
-        lda /1
-        adc #/2
-        sta /4
-        lda /1 + 1
-        adc #/3
-        sta /4 + 1
-        endm
-
-; 8-bit binary coded decimal addition
-defm LIBMATHS_BCD_ADD_8BIT_AVA ; addSource, bytValue, addTarget
-        sed
-        clc
-        lda /1
-        adc #/2
-        sta /3
-        cld
-        endm
-
-; 24-bit binary coded decimal addition
-defm    LIBMATHS_BCD_ADD_24BIT_AVA ;Source, Value, Target
-        sed
-        clc
-        lda /1
-        adc #$/2
-        sta /3
-        lda /1 + 1
-        adc #0
-        sta /3 + 1
-        lda /1 + 2
-        adc #0
-        sta /3 + 2
-        cld
-        endm
-
-defm LIBMATHS_DIVIDE_8BIT_A ;address
-        lda /1
-        lsr
-        lsr
-        lsr
         sta /1
+        lda /1 + 1
+        adc #0
+        sta /1 + 1
         endm
 
-; 8-bit subtraction between an address and a value
-defm LIBMATHS_SUBTRACT_8BIT_AVA ;Source, Value, Target
+
+; Subtract 8-bit value from 16-bit value
+defm    LIBMATHS_SUBTRACT_16BIT_AV ;Source 1, Value
         sec
         lda /1
         sbc #/2
-        sta /3
-        endm
-
-; 16-bit subtraction between two addresses
-defm    LIBMATHS_SUBTRACT_16BIT_AAA ;Source 1, Source 2, Target
-        sec
-        lda /1
-        sbc /2
-        sta /3
+        sta /1
         lda /1 + 1
-        sbc /2 + 1
-        sta /3 + 1
+        sbc #0
+        sta /1 + 1
         endm
 
-; 16-bit subtraction between an address and a value
-defm    LIBMATHS_SUBTRACT_16BIT_AVVA ;Source 1, Low byte, high byte, Target
-        sec
-        lda /1
-        sbc #/2
-        sta /4
-        lda /1 + 1
-        sbc #/3
-        sta /4 + 1
-        endm
-
-;-------------------------------------------------------------------------------

@@ -1,34 +1,41 @@
 gameObject_Update
         ldx #$FF
-nextobject
+.UpdateNextObject
         inx
         cpx numberObjects
-        bne checkobjectactive
+        bne .CheckObjectActive
         rts
-checkobjectactive
+.CheckObjectActive
         lda objectActive,x
-        beq nextobject
+        beq .UpdateNextObject
         lda objectSpeedCounter,x
-        beq animateobject
+        beq .AnimateObject
         dec objectSpeedCounter,x
-        jmp nextobject
-animateobject
+        jmp .UpdateNextObject
+.AnimateObject
         lda objectSpeed,x
         sta objectSpeedCounter,x
-        inc objectCurrentFrame,x
         lda objectCurrentFrame,x
+        clc
+        adc objectFrameRate
+        sta objectCurrentFrame,x
         cmp #8
-        bne displayobject
-        lda #0
+        bcc .DisplayObject
+        lda objectTypeOffset,x
+        cmp #OBJ_EXPLODE
+        beq .RemoveObject
+        lda objectCurrentFrame,x
+        sec
+        sbc #8
         sta objectCurrentFrame,x
         dec objectPositionX,x
         lda objectPositionX,x
         cmp #$FF
-        beq removeobject
-displayobject
+        beq .RemoveObject
+.DisplayObject
         jsr gameObject_SetScreenPos
-        jmp nextobject
-removeobject
+        jmp .UpdateNextObject
+.RemoveObject
         lda #0
         sta objectActive,x
         inc objectPositionX,x
@@ -40,7 +47,9 @@ removeobject
         lda #space
         ldy #0
         sta (scnPtrLo),y
-        jmp nextobject
+        iny
+        sta (scnPtrLo),y
+        jmp .UpdateNextObject
 
 
 gameObject_SetScreenPos
@@ -49,30 +58,46 @@ gameObject_SetScreenPos
         lda #4
         sta objectScreenPosHi,x
         lda objectPositionY,x
-        beq @done
+        beq .ExitSetScreenPos
         tay
         lda objectScreenPosLo,x
-@loop
+.ObjectScreenRowLoop
         clc
         adc #40
-        bcc @skip
+        bcc .ObjectScreenHiSkip
         inc objectScreenPosHi,x
-@skip
+.ObjectScreenHiSkip
         dey
-        bne @loop
+        bne .ObjectScreenRowLoop
         sta objectScreenPosLo,x
-@done
+.ExitSetScreenPos
         rts
+
+
 
 gameObject_Draw
         ldx #0
-@loop
+.ObjectDrawLoop
         lda objectActive,x
-        beq @next
+        beq .DrawNextObject
         lda objectScreenPosLo,x
         sta scnPtrLo
+        sta scnMapLo
         lda objectScreenPosHi,x
         sta scnPtrHi
+        clc
+        adc #$C0
+        sta scnMapHi
+        ldy #2
+        lda #0
+        sta (scnMapLo),y
+        dey
+        inx
+        txa
+        dex
+        sta (scnMapLo),y
+        dey
+        sta (scnMapLo),y
         lda objectCurrentFrame,x
         clc
         adc objectTypeOffset,x
@@ -87,6 +112,10 @@ gameObject_Draw
         ldy #0
         sta (scnPtrLo),y
 
+        ldy #2
+        lda #space
+        sta (scnPtrLo),y
+
         lda scnPtrHi
         clc
         adc #$D4
@@ -96,103 +125,102 @@ gameObject_Draw
         sta (scnPtrLo),y
         iny
         sta (scnPtrLo),y
-@next
+.DrawNextObject
         inx
         cpx numberObjects
-        bne @loop
+        bne .ObjectDrawLoop
         rts
 
 
 gameObject_SelectObject
         dec objectEntryDelay
-        beq readytoselect
+        beq .ReadyToSelect
         rts
-readytoselect
+.ReadyToSelect
         lda #OBJ_ENTRYDELAY
         sta objectEntryDelay
         ldx #0
-@loop
+.ObjectSelectLoop
         lda objectActive,x
-        beq @randomise
+        beq .RandomiseSelection
         inx
-        cpx #40
-        bne @loop
+        cpx numberObjects
+        bne .ObjectSelectLoop
         rts
-@randomise
+.RandomiseSelection
         stx currentObjectID
         lda SIDRAND
-        cmp #32
-        bcc @selected
+        cmp objectSelectionRate
+        bcc .ObjectSelected
         rts
-@selected
+.ObjectSelected
         and #7
-
         clc
         adc objectEntryRow
         cmp #21
-        bcc @skip
+        bcc .ValidRow
         sec
         sbc #18
-@skip
+.ValidRow
         sta objectEntryRow
-@tryanotherrow
+.TryAnotherRow
         ldx #0
-@testnext
+.TestRowIsFree
         lda objectPreviousRow,x
         cmp objectEntryRow
-        bne @skip2
+        bne .NothingPreviously
         inc objectEntryRow
-        jmp @tryanotherrow
-@skip2
+        jmp .TryAnotherRow
+.NothingPreviously
         inx
         cpx #5
-        bne @testnext
+        bne .TestRowIsFree
 
         ldx #3
-@keepshifting
+.ObjectHistoryLoop
         lda objectPreviousRow,x
         sta objectPreviousRow+1,x
         dex
         cpx #$FF
-        bne @keepshifting
+        bne .ObjectHistoryLoop
         lda objectEntryRow
         sta objectPreviousRow
 
         lda SIDRAND
         and #31
         cmp #16
-        bcc check_cruiser
+        bcc .CheckCruiser
         rts
-check_cruiser
+.CheckCruiser
         lsr
         clc
         cmp #5
-        bmi check_fuelpod
+        bcc .CheckFuelPod
         lda #OBJ_CRUISER
         ldy #OBJ_CRUISER_COLOUR
-        jmp setobject
-check_fuelpod
+        jmp .SetObject
+.CheckFuelPod
         cmp #3
-        bmi check_fighter
+        bcc .CheckFighter
         lda #OBJ_FUELPOD
         ldy #OBJ_FUELPOD_COLOUR
-        jmp setobject
-check_fighter
+        jmp .SetObject
+.CheckFighter
         cmp #2
-        bne check_battlestar
+        bne .CheckBattleStar
         lda #OBJ_FIGHTER
         ldy #OBJ_FIGHTER_COLOUR
-        jmp setobject
-check_battlestar
+        jmp .SetObject
+.CheckBattleStar
         cmp #1
-        bne check_mine
+        bne .CheckMine
         lda #OBJ_BATTLESTAR
         ldy #OBJ_BATTLESTAR_COLOUR
-        jmp setobject
-check_mine
+        jmp .SetObject
+.CheckMine
         lda #OBJ_MINE
         ldy #OBJ_MINE_COLOUR
-setobject
+.SetObject
         sta currentObject
         sty currentObjectColour
         ldx currentObjectID
@@ -210,10 +238,186 @@ setobject
         lda #0
         sta objectCurrentFrame,x
         lda SIDRAND
-        and #3
-        clc
-        adc #3
+        and objectLowestSpeed
         sta objectSpeed,x
         sta objectSpeedCounter,x
         rts
-        
+
+gameObject_CheckCollision
+        lda SPRCBG
+        lsr
+        bcc .CheckBullet1Collision
+        lda playerInvincible
+        bne .ExitCollisionCheck
+        lda #true
+        sta playerHit
+        jmp .ExitCollisionCheck
+.CheckBullet1Collision
+        lsr
+        lsr
+        bcc .CheckBullet2Collision
+        lda #true
+        sta bulletHit
+        jmp .ExitCollisionCheck
+.CheckBullet2Collision
+        lsr
+        bcc .CheckBullet3Collision
+        lda #true
+        sta bulletHit+1
+        jmp .ExitCollisionCheck
+.CheckBullet3Collision
+        lsr
+        bcc .ExitCollisionCheck
+        lda #true
+        sta bulletHit+2
+.ExitCollisionCheck
+        lda #false
+        sta SPRCBG
+        dec playerInvincible
+        inc SPRCOL0
+        lda playerInvincible
+        cmp #$FF
+        bne .SkipInvincibleClear
+        lda #false
+        sta playerInvincible
+        lda #gray2
+        sta SPRCOL0
+.SkipInvincibleClear
+        rts
+
+
+gameObject_Destroyed
+        lda bulletScreenHi
+        clc
+        adc #$C0
+        sta scnMapHi
+        lda bulletScreenLo
+        sta scnMapLo
+        ldy #0
+        lda (scnMapLo),y
+        bne .ObjectFound
+        iny
+        lda (scnMapLo),y
+        bne .ObjectFound
+        lda scnMapLo
+        sec
+        sbc #40
+        bcs .SkipHi1
+        dec scnMapHi
+.SkipHi1
+        sta scnMapLo
+        lda (scnMapLo),y
+        bne .ObjectFound
+        dey
+        lda (scnMapLo),y
+        bne .ObjectFound
+        lda scnMapLo
+        clc
+        adc #80
+        bcc .SkipHi2
+        inc scnMapHi
+.SkipHi2
+        sta scnMapLo
+        lda (scnMapLo),y
+        bne .ObjectFound
+        iny
+        lda (scnMapLo),y
+        bne .ObjectFound
+        lda scnMapLo
+        sec
+        sbc #41
+        bcs .SkipHi3
+        dec scnMapHi
+.SkipHi3
+        sta scnMapLo
+        dey
+        lda (scnMapLo),y
+        bne .ObjectFound
+        jmp .ExitObjectDestroyed
+.ObjectFound
+        tax
+        dex
+        lda #0
+        sta objectCurrentFrame,x
+        lda objectTypeOffset,x
+        cmp #OBJ_MINE
+        bne .NotMineHit
+        lda #true
+        sta playerHit
+.NotMineHit
+        lsr
+        lsr
+        lsr
+        tay
+        lda objectScore,y
+        sta playerScore
+        lda #OBJ_EXPLODE_COLOUR
+        sta objectColour,x
+        lda #OBJ_EXPLODE
+        sta objectTypeOffset,x
+.ExitObjectDestroyed
+        rts
+
+gameObject_AnimateGround
+        dec groundCounter
+        bpl .ExitAnimateGround
+        lda groundRate
+        sta groundCounter
+        ldy SCN_ROW24
+        ldx #0
+.AnimateGroundLoop
+        lda SCN_ROW24+1,x
+        sta SCN_ROW24,x
+        inx
+        cpx #39
+        bne .AnimateGroundLoop
+        sty SCN_ROW24+39
+.ExitAnimateGround
+        rts
+
+
+gameObject_AnimateStars
+        ldx #0
+.StarDelayLoop
+        lda starDelayCounter,x
+        beq .SetStarsY
+        dec starDelayCounter,x
+        jmp .NextStar
+.SetStarsY
+        lda #STAR_RATE
+        sta starDelayCounter,x
+        lda SIDRAND
+        cmp #50
+        bcc .SetStarsY
+        cmp #200
+        bcs .SetStarsY
+        sta starY,x
+        clc
+        lda SIDRAND
+        adc #31
+        sta starX,x
+        bcs .SetStarXMSB
+        lda starSpriteMask,x
+        eor #$FF
+        and SPRXMSB
+        sta SPRXMSB
+        jmp .NextStar
+.SetStarXMSB
+        lda starSpriteMask,x
+        ora SPRXMSB
+        sta SPRXMSB
+.NextStar
+        lda starDelayCounter,x
+        tay
+        lda starColours,y
+        sta starColour,x
+        inx
+        cpx #3
+        bne .StarDelayLoop
+        LIBSPRITE_SETPOSITION_VAA STAR_SPRITE1, starX, starY
+        LIBSPRITE_SETPOSITION_VAA STAR_SPRITE2, starX+1, starY+1
+        LIBSPRITE_SETPOSITION_VAA STAR_SPRITE3, starX+2, starY+2
+        LIBSPRITE_SETCOLOUR_VA STAR_SPRITE1, starColour
+        LIBSPRITE_SETCOLOUR_VA STAR_SPRITE2, starColour+1
+        LIBSPRITE_SETCOLOUR_VA STAR_SPRITE3, starColour+2
+        rts

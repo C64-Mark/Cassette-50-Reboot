@@ -7,14 +7,15 @@
 
 *=$5000
 Start
-        jsr Initialise
-        jsr Initialise_Sprites
+        jsr Initialise_Game
 
 GameLoop
-        LIBSCREEN_WAIT_V 255
+        LIBSCREEN_WAIT_V 220
         jsr GameFlow_Update
 
         jmp GameLoop
 
         
 
+;to do list
+; sound effects and music

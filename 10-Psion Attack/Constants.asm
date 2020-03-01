@@ -5,12 +5,12 @@
 GF_STATUS_MENU                  = 0
 GF_STATUS_ACTIVE                = 1
 GF_STATUS_HYPERJUMP             = 2
-GF_STATUS_DYING                 = 3
-GF_STATUS_DEAD                  = 4
-GF_STATUS_HISCORE               = 5
+GF_STATUS_NEXTWAVE              = 3
+GF_STATUS_DYING                 = 4
+GF_STATUS_DEAD                  = 5
+GF_STATUS_GAMEOVER              = 6
 
-OBJ_MAX                 = 30
-OBJ_ENTRYDELAY          = 05
+OBJ_ENTRYDELAY          = 02
 OBJ_CRUISER             = 00
 OBJ_CRUISER_COLOUR      = purple
 OBJ_FUELPOD             = 08
@@ -23,6 +23,25 @@ OBJ_MINE                = 32
 OBJ_MINE_COLOUR         = red
 OBJ_EXPLODE             = 40
 OBJ_EXPLODE_COLOUR      = gray2
+
+BULLET_SPEED            = 5
+BULLET_RATE             = 20
+HYPERJUMP_RATE          = 25
+PLAYER_DELTA            = 200
+EXPLOSION_RATE          = 3
+STAR_RATE               = 7
+
+SHIP_OVERLAY_SPRITE     = 0
+SHIP_SPRITE             = 1
+BULLET_SPRITE1          = 2
+BULLET_SPRITE2          = 3
+BULLET_SPRITE3          = 4
+STAR_SPRITE1            = 5
+STAR_SPRITE2            = 6
+STAR_SPRITE3            = 7
+
+KEY_INPUT_DELAY         = 10
+KEY_SPACE               = 60
 
 black                   = #$00
 white                   = #$01

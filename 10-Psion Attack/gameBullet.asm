@@ -1,21 +1,19 @@
 gameBullet_Fired
         ldx #0
-@loop
+.CheckBulletFreeLoop
         lda bulletActive,x
-        beq bulletfree
+        beq .BulletAvailable
         inx
         cpx #3
-        bne @loop
+        bne .CheckBulletFreeLoop
         rts
-bulletfree
+.BulletAvailable
         lda bulletDelay
-        cmp #0
-        bne bulletexit
+        bne .ExitBulletFired
         lda #1
         sta bulletActive,x
-        lda bulletRate
+        lda #BULLET_RATE
         sta bulletDelay
-        ;inc BDCOL
         lda playerX+1
         sta bulletX,x
         lda playerY+1
@@ -36,34 +34,32 @@ bulletfree
         eor #$FF
         and SPRXMSB
         sta SPRXMSB
-bulletexit
+.ExitBulletFired
         rts
 
 
 gameBullet_Move
         ldx #0
-bulletloop
+.BulletLoop
         lda bulletActive,x
-        beq nextbullet
+        beq .NextBullet
 movebullet
         lda bulletX,x
-        tay
-        iny
-;check if we've crossed xmsb boundary
-        cpy #0
-        bne @offscreencheck
+        clc
+        adc #BULLET_SPEED
+        sta bulletX,x
+        bcc .BulletOffScreenCheck
         lda #1
         sta bulletXMSB,x
         lda bulletSpriteMask,x
         ora SPRXMSB
         sta SPRXMSB
-        jmp updatebullet
-@offscreencheck
-;check if we've gone off screen
-        cpy #88
-        bcc updatebullet
+        jmp .UpdateBullet
+.BulletOffScreenCheck
+        cmp #56
+        bcc .UpdateBullet
         lda bulletXMSB,x
-        beq updatebullet
+        beq .UpdateBullet
         lda #0
         sta bulletActive,x
         sta bulletXMSB,x
@@ -71,10 +67,8 @@ movebullet
         eor #$FF
         and SPREN
         sta SPREN
-        jmp nextbullet
-updatebullet
-        tya
-        sta bulletX,x
+        jmp .NextBullet
+.UpdateBullet
         lda bulletSprite,x
         asl
         tay
@@ -82,19 +76,91 @@ updatebullet
         sta SPRX0,y
         lda bulletY,x
         sta SPRY0,y        
-nextbullet
+.NextBullet
         inx
         cpx #3
-        bne bulletloop
+        bne .BulletLoop
         rts
 
 
-
-
-@bulletupdate
-@nextbullet
-
-
-
-
+gameBullet_Collision
+        ldx #0
+        lda bulletHit,x
+        beq .Bullet2
+        jsr gameBullet_GetScreenPos
+        jsr gameObject_Destroyed
+        jmp .BulletCollisionExit
+.Bullet2
+        inx
+        lda bulletHit,x
+        beq .Bullet3
+        jsr gameBullet_GetScreenPos
+        jsr gameObject_Destroyed
+        jmp .BulletCollisionExit
+.Bullet3
+        inx
+        lda bulletHit,x
+        beq .BulletCollisionExit
+        jsr gameBullet_GetScreenPos
+        jsr gameObject_Destroyed
+.BulletCollisionExit
         rts
+
+
+gameBullet_GetScreenPos
+        lda #0
+        sta zpLow
+        lda #4
+        sta zpHigh
+        lda bulletY,x
+        sec
+        sbc #39 ;11-50 offset for sprite
+        lsr
+        lsr
+        lsr
+        beq .ZeroRows
+        tay
+        lda #0
+.AddRowsLoop
+        clc
+        adc #40
+        bcc .SkipBulletHi
+        inc zpHigh
+.SkipBulletHi
+        dey
+        bne .AddRowsLoop
+.ZeroRows
+        sta zpLow
+        lda bulletX,x
+        lsr
+        lsr
+        lsr
+        clc
+        adc zpLow
+        bcc .SkipBulletHi2
+        inc zpHigh
+.SkipBulletHi2
+        sta zpLow
+        lda bulletXMSB,x
+        beq .SkipBulletHi3
+        clc
+        lda zpLow
+        adc #31
+        sta zpLow
+        bcc .SkipBulletHi3
+        inc zpHigh
+.SkipBulletHi3
+        lda zpLow
+        sta bulletScreenLo
+        lda zpHigh
+        sta bulletScreenHi
+        lda #0
+        sta bulletHit,x
+        sta bulletActive,x
+        lda bulletSprite,x
+        lda bulletSpriteMask,x
+        eor #$FF
+        and SPREN
+        sta SPREN
+        rts
+

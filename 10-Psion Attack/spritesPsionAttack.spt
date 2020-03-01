@@ -18,16 +18,16 @@
       <data>0</data>
       <data>0</data>
       <data>0</data>
-      <data>28672</data>
-      <data>18432</data>
-      <data>1024</data>
-      <data>512</data>
-      <data>23808</data>
-      <data>512</data>
-      <data>1024</data>
-      <data>18432</data>
-      <data>28672</data>
       <data>0</data>
+      <data>0</data>
+      <data>28672</data>
+      <data>20224</data>
+      <data>1024</data>
+      <data>12800</data>
+      <data>12800</data>
+      <data>1024</data>
+      <data>20224</data>
+      <data>28672</data>
       <data>0</data>
       <data>0</data>
       <data>0</data>
@@ -54,14 +54,14 @@
       <data>0</data>
       <data>0</data>
       <data>0</data>
-      <data>8192</data>
-      <data>26624</data>
-      <data>26624</data>
-      <data>8704</data>
-      <data>26624</data>
-      <data>26624</data>
-      <data>8192</data>
       <data>0</data>
+      <data>0</data>
+      <data>8192</data>
+      <data>26624</data>
+      <data>27136</data>
+      <data>27136</data>
+      <data>26624</data>
+      <data>8192</data>
       <data>0</data>
       <data>0</data>
       <data>0</data>
@@ -302,8 +302,43 @@
       <data>0</data>
       <data>0</data>
       <data>0</data>
-      <data>34</data>
-      <data>51</data>
+      <data>42</data>
+      <data>0</data>
+      <data>0</data>
+      <data>63</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+    </sdata>
+   </sprite>
+  <sprite>
+    <description>Stars</description>
+    <links></links>
+    <include>True</include>
+    <multi>False</multi>
+    <spbkgnd>0</spbkgnd>
+    <spcolour>1</spcolour>
+    <mcolour1>2</mcolour1>
+    <mcolour2>15</mcolour2>
+    <expandx>False</expandx>
+    <expandy>False</expandy>
+    <sdata>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>4096</data>
       <data>0</data>
       <data>0</data>
       <data>0</data>
