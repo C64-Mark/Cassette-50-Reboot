@@ -9,8 +9,8 @@ Text tidied up
 
 Possible future improvements:  
 
-Title tune
-Further graphics enhancements
-Each-way betting  
+Title tune  
+Further graphics enhancements  
+Each-way betting   
 Better animation
 
