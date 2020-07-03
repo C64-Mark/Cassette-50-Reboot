@@ -1,19 +1,15 @@
+IOPORT          = $01
 
-sysKeyPress     = $C5
+SCREENRAM       = $4400
 
-sysIntVectorLo  = $0314
-sysIntVectorHi  = $0315
-
-SCREENRAM       = $0400
-
-SPRPTR0         = $07F8
-SPRPTR1         = $07F9
-SPRPTR2         = $07FA
-SPRPTR3         = $07FB
-SPRPTR4         = $07FC
-SPRPTR5         = $07FD
-SPRPTR6         = $07FE
-SPRPTR7         = $07FF
+SPRPTR0         = $47F8
+SPRPTR1         = $47F9
+SPRPTR2         = $47FA
+SPRPTR3         = $47FB
+SPRPTR4         = $47FC
+SPRPTR5         = $47FD
+SPRPTR6         = $47FE
+SPRPTR7         = $47FF
 
 ;*** VIC ***
 SPRX0           = $D000 ;Sprite 0 x-position
@@ -97,17 +93,15 @@ COLOURRAM       = $D800
 CIAPRA          = $DC00 ;CIA port A
 CIAPRB          = $DC01 ;CIA port B
 DDRB            = $DC03 ;Data direction register port B
+ICSR1           = $DC0D
 
 VICBANK         = $DD00
 DDRA            = $DD02 ;Data direction register port A
+ICSR2           = $DD0D
 
 ;-------------------------------------------------------------------------------
 ; KERNAL ROM $E000-$FFFF
 ;-------------------------------------------------------------------------------
 
-krnINTERRUPT    = $EA31
-krnCHRIN        = $FFCF
-krnCHROUT       = $FFD2
-krnGETIN        = $FFE4
-krnPLOT         = $FFF0
-
+sysIntVectorLo  = $FFFE
+sysIntVectorHi  = $FFFF

@@ -6,11 +6,17 @@
 
 *=$0820
 Start
-
-        ;jsr Initialise
+        jsr Initialise_Main
+        jsr IRQ_Initialise
 
 GameLoop
+        lda gameFlag
+        beq GameLoop                    ; loop until raster IRQ occurs
 
-        ;jsr GameFlowUpdate
+        dec gameFlag
+        jsr GameFlowUpdate
+
         jmp GameLoop
+
+
 

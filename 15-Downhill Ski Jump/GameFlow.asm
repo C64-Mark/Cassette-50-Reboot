@@ -24,12 +24,22 @@ GameFlowUpdate
 
 
 GameFlowStatusMenu
+        jsr Menu_InitialiseScreen
+        jsr Menu_AnimateSkier
+        jsr Menu_ColourWash
+        jsr Menu_TextFlash
+        jsr Menu_Input
+        jsr Sound_IntroTune
         rts
 
 GameFlowStatusDemo
         rts
 
 GameFlowStatusSkiing
+        lda #0
+        sta VCREG1
+        lda #RED
+        sta BDCOL
         rts
 
 GameFlowStatusStageTransition
